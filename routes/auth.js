@@ -32,7 +32,8 @@ passport.use(
                     done(null, exUser);
                 } else {
                     const newUser = await User.create({
-                        email: profile._json && profile._json.kakao_account.email,
+                        email:
+                            profile._json && profile._json.kakao_account.email,
                         nickname: profile.displayName,
                         snsId: profile.id,
                         profile_img: profile._json.properties.thumbnail_image,
@@ -67,7 +68,8 @@ router.get(
         console.log(req.user);
         const token = jwt.sign({ snsId: req.user.snsId }, JWT_SECRET_KEY);
 
-        res.redirect('http://localhost:3000');
+        // res.redirect('http://localhost:3000');
+        res.json({token});
     }
 );
 
@@ -80,19 +82,22 @@ router.get('/users/auth/me', authMiddleware, async (req, res) => {
     });
 });
 
+
 // 유저 프로필 조회
 router.get('/users/:userId', authMiddleware, async (req, res) => {
     const { user } = res.locals;
     const { userId } = req.params;
 
-    const loginUser = await User.findOne({ snsId: user.snsId });
-    const findUser = await User.findOne({ _id: userId });
+    const loginUser = await User.findOne({ snsId : user.snsId })
+    const findUser = await User.findOne({_id: userId})
 
-    if (loginUser.userId === findUser.userId) {
+    if(loginUser.userId === findUser.userId){
+        
     } else {
-        const findgood = await User.find;
-        return res.json({ user });
+        const findgood = await User.find
+        return res.json({user})
     }
+
 });
 
 module.exports = router;
