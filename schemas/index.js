@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { mongodbUrl } = process.env
+const mongoose = require('mongoose');
+const { mongodbUrl } = process.env;
 
 const connect = () => {
     mongoose
@@ -9,11 +9,11 @@ const connect = () => {
             ignoreUndefined: true,
         })
         .then(() => console.log('MongoDB Connected', new Date()))
-        .catch((err) => console.log(err))
-}
+        .catch((err) => console.log(err));
+};
 
 mongoose.connection.on('error', (err) => {
-    console.error('MongoDB Connection Error', err)
-})
+    console.error('MongoDB Connection Error', err);
+});
 
-module.exports = connect
+module.exports = connect;
