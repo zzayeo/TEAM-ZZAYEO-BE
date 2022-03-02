@@ -32,8 +32,7 @@ passport.use(
                     done(null, exUser);
                 } else {
                     const newUser = await User.create({
-                        email:
-                            profile._json && profile._json.kakao_account.email,
+                        email: profile._json && profile._json.kakao_account.email,
                         nickname: profile.displayName,
                         snsId: profile.id,
                         profile_img: profile._json.properties.thumbnail_image,
@@ -79,6 +78,21 @@ router.get('/users/auth/me', authMiddleware, async (req, res) => {
         nickname: user.nickname,
         userImg: user.profile_img,
     });
+});
+
+// 유저 프로필 조회
+router.get('/users/:userId', authMiddleware, async (req, res) => {
+    const { user } = res.locals;
+    const { userId } = req.params;
+
+    const loginUser = await User.findOne({ snsId: user.snsId });
+    const findUser = await User.findOne({ _id: userId });
+
+    if (loginUser.userId === findUser.userId) {
+    } else {
+        const findgood = await User.find;
+        return res.json({ user });
+    }
 });
 
 module.exports = router;
