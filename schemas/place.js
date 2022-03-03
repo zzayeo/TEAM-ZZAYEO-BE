@@ -1,37 +1,35 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const PlaceSchema = new mongoose.Schema(
-    {
-        planId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Plan',
-        },
-        dayId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Day',
-        },
-        placeName: {
-            type: String,
-        },
-        lat: {
-            type: Number,
-        },
-        lng: {
-            type: Number,
-        },
-        address: {
-            type: String,
-        },
-        memoImage: {
-            type: Array,
-        },
-        memoText: {
-            type: String,
-            default: '',
-        },
+const PlaceSchema = new mongoose.Schema({
+    planId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Plan',
     },
-    { timestamps: true }
-);
+    dayId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Day',
+    },
+    placeName: {
+        type: String    
+    },
+    lat: {
+        type: Number
+    },
+    lng: {
+        type: Number
+    },
+    address: {
+        type: String 
+    },
+    memoImage: {
+        type: Array,
+    },
+    memoText: {
+        type: String,
+        default: ''
+    }
+},
+{ timestamps: true });
 
 PlaceSchema.virtual('placeId').get(function () {
     return this._id.toHexString();
