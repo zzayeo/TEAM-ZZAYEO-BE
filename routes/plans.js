@@ -217,43 +217,36 @@ router.post('/plans/days/:dayId', upload.fields([
     res.json({});
 });
 
-//특정 여행에 장소 사진, 메모 추가하기
-router.post(
-    '/plans/days/places/:placeId',
-    upload.fields([
-        { name: 'videoFile', maxCount: 1 },
-        { name: 'imageFile', maxCount: 5 },
-    ]),
-    async (req, res) => {
-        const { placeId } = req.params;
-        const { memoText } = req.body;
+//여행 장소 및 내용 수정하기
+router.patch('/plans/days/places/:placeId', authMiddleware, upload.fields([
+    { name: 'videoFile', maxCount: 1 },
+    { name: 'imageFile', maxCount: 5 },
+]), async (req, res) => {
+    const { placeId } = req.params;
+    const { placeName, lat, lng, address, time, memoText } = req.body;
 
-        let videoUrl = [];
-        let imageUrl = [];
+    let videoUrl = [];
+    let imageUrl = [];
 
-        req.files.videoFile ? (videoUrl = req.files.videoFile) : videoUrl;
-        req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
+    req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
+    req.files.imageFile ? imageUrl = req.files.imageFile : imageUrl;
 
-        const updatePlace = await Place.findOne({ _id: placeId });
+    const findPlace = await Place.findOneAndUpdate({ _id: placeId }, { placeName, lat, lng, address, time, memoText})
 
-        for (let i = 0; i < videoUrl.length; i++) {
-            updatePlace.memoImage.push(videoUrl[i].location);
-        }
-
-        for (let i = 0; i < imageUrl.length; i++) {
-            updatePlace.memoImage.push(imageUrl[i].location);
-        }
-
-        if (memoText) updatePlace.memoText = memoText;
-
-        await updatePlace.save();
-
-        res.json({
-            result: 'success',
-            message: '추가 완료',
-        });
+    for(let i=0; i< videoUrl.length; i++) {
+        findPlace.memoImage.push(videoUrl[i].location)
     }
-);
+    
+    for(let i=0; i< imageUrl.length; i++) {
+        findPlace.memoImage.push(imageUrl[i].location)
+    }
+    
+    if (memoText) updatePlace.memoText = memoText;
+
+    
+    await findPlace.save();
+    res.json({});
+});
 
 //특정 장소 삭제하기
 router.delete('/plans/days/places/:placeId', authMiddleware, async (req, res) => {
