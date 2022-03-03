@@ -276,4 +276,14 @@ router.delete('/plans/:planId', authMiddleware, async (req, res) => {
     }
 });
 
+/* 나의 여행 페이지*/
+// 나의 여행 불러오기
+router.get('/myplans', authMiddleware, async (req, res) => {
+    const { userId } = res.locals.user;
+
+    const findplans = await Plan.find({ userId });
+
+    res.json({ plans : findplans });
+});
+
 module.exports = router;
