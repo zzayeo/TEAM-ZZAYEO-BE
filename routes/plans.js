@@ -176,19 +176,43 @@ router.post('/plans/:planId/public', authMiddleware, async (req, res) => {
 });
 
 //특정 여행에 장소 추가하기
-router.post('/plans/days/:dayId', async (req, res) => {
+router.post('/plans/days/:dayId', upload.fields([
+    { name: 'videoFile', maxCount: 1 },
+    { name: 'imageFile', maxCount: 5 },
+]), async (req, res) => {
     const { dayId } = req.params;
-    const { placeName, lat, lng, address } = req.body;
+    const { placeName, lat, lng, address, time, memoText } = req.body;
 
-    const findDay = await Day.findOne({ _id: dayId });
+    let videoUrl = [];
+    let imageUrl = [];
+
+    req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
+    req.files.imageFile ? imageUrl = req.files.imageFile : imageUrl;
+
+    const findDay = await Day.findOne({ _id: dayId })
     const newPlace = new Place({
-        planId: findDay.planId,
+        planId : findDay.planId,
         dayId,
         placeName,
+        time,
         lat,
         lng,
         address,
+        memoText,
+        memoImage,
     });
+
+
+    for(let i=0; i< videoUrl.length; i++) {
+        newPlace.memoImage.push(videoUrl[i].location)
+    }
+    for(let i=0; i< imageUrl.length; i++) {
+        newPlace.memoImage.push(imageUrl[i].location)
+    }
+    if (memoText) newPlace.memoText = memoText;
+
+
+
     await newPlace.save();
     res.json({});
 });
