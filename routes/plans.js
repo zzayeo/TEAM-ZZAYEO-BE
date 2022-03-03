@@ -158,6 +158,23 @@ router.get('/plans/:planId', async (req, res) => {
     });
 });
 
+// 공개 or 비공개 컨트롤하기
+router.post('/plans/:planId/public', authMiddleware, async (req, res) => {
+    const { userId } = res.locals.user;
+    const { planId } = req.params;
+    const { status } = req.body;
+
+    const findPlan = await Plan.findOne({_id: planId})
+    if(findPlan.userId !== userId) {
+        return res.status(401).json({ result: 'fail', message: '본인의 여행만 변경할수 있습니다.' });
+    }
+
+    findPlan.status = status;
+    await findPlan.save();
+
+    return res.status(200).json({ result : 'success', message: '변경 완료 되었습니다.' })
+});
+
 //특정 여행에 장소 추가하기
 router.post('/plans/days/:dayId', async (req, res) => {
     const { dayId } = req.params;
