@@ -18,20 +18,12 @@ const { upload } = require('../middlewares/upload');
 /* 메인 페이지 */
 // 전체 여행 불러오기
 router.get('/plans', authMiddleware, async (req, res) => {
-    const { user } = res.locals;
-    const { page } = req.query;
-    console.log(page);
-    if (page) {
-        +page;
-    } else page = 1;
+    const {user} = res.locals;
+    let { page } = req.query;
+    console.log(page)
+    page === undefined ? page = 1 : +page;
     const numPlans = await Plan.estimatedDocumentCount(); // 전체 포스트 갯수
     const wholePages = numPlans === 0 ? 1 : Math.ceil(numPlans / 5); // 5로 나눠서 필요한 페이지 갯수 구하기
-    // const pagingPlans = await Plan.find()
-    //     .sort('-createdAt')
-    //     .skip(5 * (page - 1))
-    //     .limit(5)
-    //     .populate('userId', 'snsId email nickname profile_img')
-    //     .exec();
 
     const plansLikeBookmark = await Plan.findLikeBookmark(page, user);
 
