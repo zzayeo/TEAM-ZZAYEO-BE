@@ -8,7 +8,7 @@ const router = express.Router();
 const authRouter = require('./routes/auth');
 const planRouter = require('./routes/plans');
 const commentRouter = require('./routes/comments');
-const { swaggerUi, specs } = require('./models/swagger');
+// const { swaggerUi, specs } = require('./models/swagger');
 
 connect();
 
