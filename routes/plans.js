@@ -226,7 +226,7 @@ router.patch(
     authMiddleware,
     upload.fields([
         // { name: 'videoFile', maxCount: 1 },
-        { name: 'imageFile', maxCount: 5 },
+        { name: 'imageFile', maxCount: 10 },
     ]),
     async (req, res) => {
         const { placeId } = req.params;
@@ -257,6 +257,16 @@ router.patch(
         res.json({ result: 'success', message: '수정 완료 되었습니다.' });
     }
 );
+
+//특정 장소 삭제하기
+router.delete('/plans/days/places/:placeId', authMiddleware, async (req, res) => {
+    const { placeId } = req.params;
+    await Place.deleteOne({ _id: placeId });
+    res.json({
+        result: 'success',
+        message: '삭제 완료',
+    });
+});
 
 //특정 장소 삭제하기
 router.delete('/plans/days/places/:placeId', authMiddleware, async (req, res) => {
