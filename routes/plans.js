@@ -182,18 +182,18 @@ router.post(
     '/plans/days/:dayId',
     upload.fields([
         // { name: 'videoFile', maxCount: 1 },
-        { name: 'imageFile', maxCount: 5 },
+        { name: 'imageFile', maxCount: 10 },
     ]),
     async (req, res) => {
         const { dayId } = req.params;
-        const { placeName, lat, lng, address, time, memoText } = req.body;
+        const { placeName, lat, lng, address, time, memoText, address_components } = req.body;
 
         // let videoUrl = [];
         let imageUrl = [];
 
         // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
         req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
-
+        console.log(address_components);
         const findDay = await Day.findOne({ _id: dayId });
         console.log(req.body.lat);
         const newPlace = new Place({
