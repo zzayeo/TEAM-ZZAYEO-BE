@@ -38,8 +38,12 @@ router.post('/plans/:planId/comments', authMiddleware, async (req, res) => {
         planId,
     });
 
+    // const comments = await Comment.find({ _id : newComment._id }).populate('likeCount userId').populate({
+    //     path: 'replies', populate :{ path : 'userId' }
+    // });
+
     res.json({
-        newComment,
+        // newComment : comments,
         result: 'success',
         message: '성공',
     });
