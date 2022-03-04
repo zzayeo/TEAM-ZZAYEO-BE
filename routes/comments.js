@@ -39,6 +39,7 @@ router.post('/plans/:planId/comments', authMiddleware, async (req, res) => {
     });
 
     res.json({
+        newComment,
         result: 'success',
         message: '성공',
     });
