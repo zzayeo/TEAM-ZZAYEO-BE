@@ -204,7 +204,6 @@ router.post(
             lng,
             address,
             memoText,
-            memoImage,
         });
 
         for (let i = 0; i < videoUrl.length; i++) {
