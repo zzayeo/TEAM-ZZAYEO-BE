@@ -14,6 +14,7 @@ const Comments = require('../schemas/comment');
 //미들웨어
 const authMiddleware = require('../middlewares/auth-middleware');
 const { upload } = require('../middlewares/upload');
+const { deleteS3 } = require('../middlewares/deleteS3');
 
 /* 메인 페이지 */
 // 전체 여행 불러오기
@@ -198,9 +199,9 @@ router.post(
 
         // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
         req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
-        console.log(address_components);
+        // console.log(address_components);
         const findDay = await Day.findOne({ _id: dayId });
-        console.log(req.body.lat);
+        console.log(findDay);
         const newPlace = new Place({
             planId: findDay.planId,
             dayId,
@@ -221,7 +222,15 @@ router.post(
         if (memoText) newPlace.memoText = memoText;
 
         await newPlace.save();
-        res.json({ result: 'success', message: '추가 완료 되었습니다.' });
+
+        const newDayFind = await Day.findOne({ _id: dayId }).populate('places');
+        console.log('newDayFind :', newDayFind);
+
+        res.json({
+            newDayFind,
+            result: 'success',
+            message: '추가 완료 되었습니다.',
+        });
     }
 );
 
@@ -273,16 +282,6 @@ router.delete('/plans/days/places/:placeId', authMiddleware, async (req, res) =>
     });
 });
 
-//특정 장소 삭제하기
-router.delete('/plans/days/places/:placeId', authMiddleware, async (req, res) => {
-    const { placeId } = req.params;
-    await Place.deleteOne({ _id: placeId });
-    res.json({
-        result: 'success',
-        message: '삭제 완료',
-    });
-});
-
 //여행 삭제하기
 router.delete('/plans/:planId', authMiddleware, async (req, res) => {
     const { nickname } = res.locals.user;
@@ -299,7 +298,8 @@ router.delete('/plans/:planId', authMiddleware, async (req, res) => {
         });
     }
 });
-/* 나의 여행 페이지*/
+
+/* 나의 여행 페이지 */
 // 나의 여행 불러오기
 router.get('/myplans', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
