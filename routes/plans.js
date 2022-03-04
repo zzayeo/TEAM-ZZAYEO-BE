@@ -225,17 +225,17 @@ router.patch(
     '/plans/days/places/:placeId',
     authMiddleware,
     upload.fields([
-        { name: 'videoFile', maxCount: 1 },
+        // { name: 'videoFile', maxCount: 1 },
         { name: 'imageFile', maxCount: 5 },
     ]),
     async (req, res) => {
         const { placeId } = req.params;
         const { placeName, lat, lng, address, time, memoText } = req.body;
 
-        let videoUrl = [];
+        // let videoUrl = [];
         let imageUrl = [];
 
-        req.files.videoFile ? (videoUrl = req.files.videoFile) : videoUrl;
+        // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
         req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
         const findPlace = await Place.findOneAndUpdate(
@@ -243,9 +243,9 @@ router.patch(
             { placeName, lat, lng, address, time, memoText }
         );
 
-        for (let i = 0; i < videoUrl.length; i++) {
-            findPlace.memoImage.push(videoUrl[i].location);
-        }
+        // for(let i=0; i< videoUrl.length; i++) {
+        //     findPlace.memoImage.push(videoUrl[i].location)
+        // }
 
         for (let i = 0; i < imageUrl.length; i++) {
             findPlace.memoImage.push(imageUrl[i].location);
@@ -254,7 +254,7 @@ router.patch(
         if (memoText) updatePlace.memoText = memoText;
 
         await findPlace.save();
-        res.json({});
+        res.json({ result: 'success', message: '수정 완료 되었습니다.' });
     }
 );
 
