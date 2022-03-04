@@ -138,7 +138,7 @@ router.post('/plans', authMiddleware, async (req, res) => {
     res.json({
         result: 'success',
         message: '성공',
-        planId: newPlan.plan_id,
+        planId: newPlan.planId,
     });
 });
 
@@ -272,7 +272,7 @@ router.delete('/plans/days/places/:placeId', authMiddleware, async (req, res) =>
 router.delete('/plans/:planId', authMiddleware, async (req, res) => {
     const { user } = res.locals;
     const nickname = user.nickname;
-    const planId = req.params;
+    const { planId } = req.params;
 
     const targetPlan = await Plan.findOne({ _id: planId, nickname });
     if (!targetPlan) {
