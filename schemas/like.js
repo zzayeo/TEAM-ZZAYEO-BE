@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const LikeSchema = new mongoose.Schema({
     planId: {
@@ -12,7 +12,7 @@ const LikeSchema = new mongoose.Schema({
     replyId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Reply',
-    },    
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

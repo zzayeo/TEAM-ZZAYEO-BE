@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 // const Travel = require('./travel');
-
 
 const DaySchema = new mongoose.Schema({
     planId: {
@@ -9,18 +8,18 @@ const DaySchema = new mongoose.Schema({
     },
     dayNumber: {
         type: Number,
-    }    
+    },
 });
 
 DaySchema.virtual('dayId').get(function () {
     return this._id.toHexString();
 });
 
-DaySchema.virtual('places',{
+DaySchema.virtual('places', {
     ref: 'Place',
     localField: '_id',
     foreignField: 'dayId',
-})
+});
 
 DaySchema.set('toJSON', { virtuals: true });
 DaySchema.set('toObject', { virtuals: true });

@@ -1,23 +1,25 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const ReplySchema = new mongoose.Schema({
-    planId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Plan',
+const ReplySchema = new mongoose.Schema(
+    {
+        planId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Plan',
+        },
+        commentId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment',
+        },
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        },
+        content: {
+            type: String,
+        },
     },
-    commentId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-    },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-    content:{
-        type: String
-    },
-},
-{ timestamps: true });
+    { timestamps: true }
+);
 
 ReplySchema.virtual('likeCount', {
     localField: '_id',
