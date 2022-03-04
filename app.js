@@ -8,7 +8,6 @@ const router = express.Router();
 const authRouter = require('./routes/auth');
 const planRouter = require('./routes/plans');
 const commentRouter = require('./routes/comments');
-// const { swaggerUi, specs } = require('./models/swagger');
 
 connect();
 
@@ -30,7 +29,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // API 요청에서 받은 body 값을 파싱(해석)하는 역할을 수행하는 것이 bodyParser
 app.use('/api', [authRouter, planRouter, commentRouter]);
