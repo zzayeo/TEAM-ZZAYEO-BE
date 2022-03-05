@@ -73,7 +73,7 @@ router.delete('/plans/:planId/bookmark', authMiddleware, async (req, res) => {
     const { planId } = req.params;
 
     const findBookmark = await Bookmark.findOne({ planId, userId });
-    if (findBookmark !== null) {
+    if (findBookmark === null) {
         return res.status(401).json({ result: 'fail', message: '이미 북마크 취소했습니다.' });
     }
 
@@ -113,7 +113,7 @@ router.delete('/plans/:planId/like', authMiddleware, async (req, res) => {
     const { planId } = req.params;
 
     const findLike = await Like.findOne({ planId, userId });
-    if (findLike !== null) {
+    if (findLike === null) {
         return res.status(401).json({ result: 'fail', message: '이미 좋아요 취소했습니다.' });
     }
 
