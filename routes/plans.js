@@ -169,18 +169,22 @@ router.post('/plans', authMiddleware, async (req, res) => {
 });
 
 //특정 여행 받아오기
-router.get('/plans/:planId', async (req, res) => {
+router.get('/plans/:planId', authMiddleware, async (req, res) => {
+    const { user } = res.locals;
     const { planId } = req.params;
     const plan = await Plan.findOne({ _id: planId })
         .populate({
             path: 'days',
             populate: { path: 'places' },
         })
-        .populate('userId');
+        .populate('userId likeCount bookmarkCount');
+
+    const planLikeBookmark = await Plan.findLikeBookmark([plan], user);
+
     res.json({
         result: 'success',
         message: '성공',
-        plan,
+        plan: planLikeBookmark[0],
     });
 });
 
