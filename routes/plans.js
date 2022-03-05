@@ -92,6 +92,11 @@ router.post('/plans/:planId/like', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { planId } = req.params;
 
+    const findLike = await Like.findOne({ planId, userId });
+    if (findLike !== null) {
+        return res.status(401).json({ result: 'fail', message: '이미 좋아요했습니다.' });
+    }
+
     const newLike = await Like.create({
         userId,
         planId,
@@ -101,7 +106,6 @@ router.post('/plans/:planId/like', authMiddleware, async (req, res) => {
         message: '성공',
     });
 });
-
 // 특정 여행 좋아요 취소
 router.delete('/plans/:planId/like', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
