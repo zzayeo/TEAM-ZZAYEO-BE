@@ -65,10 +65,16 @@ router.post('/plans/:planId/bookmark', authMiddleware, async (req, res) => {
         message: '성공',
     });
 });
+
 // 특정 여행 북마크 취소
 router.delete('/plans/:planId/bookmark', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { planId } = req.params;
+
+    const findBookmark = await Bookmark.findOne({ planId, userId });
+    if (findBookmark !== null) {
+        return res.status(401).json({ result: 'fail', message: '이미 북마크 취소했습니다.' });
+    }
 
     await Bookmark.deleteOne({
         userId,
