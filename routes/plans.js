@@ -111,6 +111,11 @@ router.delete('/plans/:planId/like', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
     const { planId } = req.params;
 
+    const findLike = await Like.findOne({ planId, userId });
+    if (findLike !== null) {
+        return res.status(401).json({ result: 'fail', message: '이미 좋아요 취소했습니다.' });
+    }
+
     await Like.deleteOne({
         userId,
         planId,
