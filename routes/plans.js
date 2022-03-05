@@ -242,11 +242,11 @@ router.post(
 
         await newPlace.save();
 
-        const newDayFind = await Day.findOne({ _id: dayId }).populate('places');
-        console.log('newDayFind :', newDayFind);
+        // const newDayFind = await Day.findOne({ _id: dayId }).populate('places');
+        // console.log('newDayFind :', newDayFind);
 
         res.json({
-            newDayFind,
+            // newDayFind,
             result: 'success',
             message: '추가 완료 되었습니다.',
         });
