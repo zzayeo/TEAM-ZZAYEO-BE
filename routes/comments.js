@@ -149,6 +149,11 @@ router.post('/plans/comments/replies/:replyId/like', authMiddleware, async (req,
     const { userId } = res.locals.user;
     const { replyId } = req.params;
 
+    const findLike = await Like.findOne({ replyId, userId });
+    if (findLike !== null) {
+        return res.status(401).json({ result: 'fail', message: '이미 좋아요했습니다.' });
+    }
+
     const newLike = await Like.create({
         uerIds,
         replyId,
