@@ -20,7 +20,7 @@ const { deleteS3 } = require('../middlewares/deleteS3');
 // 전체 여행 불러오기
 router.get('/plans', authMiddleware, async (req, res) => {
     const { user } = res.locals;
-    let { page, style } = req.query;
+    let { page , destination, style } = req.query;
 
     page === undefined || page < 0 ? (page = 1) : +page;
 
