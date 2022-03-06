@@ -158,7 +158,7 @@ router.post('/plans/comments/replies/:replyId/like', authMiddleware, async (req,
     }
 
     const newLike = await Like.create({
-        uerIds,
+        userId,
         replyId,
     });
     res.json({
