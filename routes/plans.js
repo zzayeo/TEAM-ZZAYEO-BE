@@ -78,9 +78,8 @@ router.get('/plans', authMiddleware, async (req, res) => {
 // 북마크 여행 불러오기
 router.get('/plans/bookmark', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
-    const { planId } = req.params;
 
-    const findBookmarks = await Bookmark.find({ userId });
+    const findBookmarks = await Bookmark.find({ userId }).populate('planId');
 
     res.json({ plans: findBookmarks });
 });
