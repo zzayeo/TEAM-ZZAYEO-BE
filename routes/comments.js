@@ -21,7 +21,7 @@ router.get('/plans/:planId/comments', async (req, res) => {
         .populate('likeCount userId')
         .populate({
             path: 'replies',
-            populate: { path: 'userId' },
+            populate: { path: 'userId likeCount' },
         });
     res.json({ comments });
 });
