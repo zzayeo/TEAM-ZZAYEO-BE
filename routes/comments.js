@@ -15,7 +15,8 @@ const Comment = require('../schemas/comment');
 const authMiddleware = require('../middlewares/auth-middleware');
 
 //여행에 달린 댓글 조회
-router.get('/plans/:planId/comments', async (req, res) => {
+router.get('/plans/:planId/comments', authMiddleware, async (req, res) => {
+    const { user } = res.locals;
     const { planId } = req.params;
     const comments = await Comment.find({ planId })
         .populate('likeCount userId')
@@ -23,7 +24,9 @@ router.get('/plans/:planId/comments', async (req, res) => {
             path: 'replies',
             populate: { path: 'userId likeCount' },
         });
-    res.json({ comments });
+
+    const commentLike = await Comment.findLike(comments, user);
+    res.json({ comments: commentLike });
 });
 
 //여행 댓글 작성
