@@ -109,6 +109,11 @@ router.delete('/plans/comments/:commentId/like', authMiddleware, async (req, res
     const { userId } = res.locals.user;
     const { commentId } = req.params;
 
+    const findLike = await Like.findOne({ commentId, userId });
+    if (findLike === null) {
+        return res.status(401).json({ result: 'fail', message: '이미 좋아요 취소했습니다.' });
+    }
+
     await Like.deleteOne({
         userId,
         commentId,
@@ -116,7 +121,7 @@ router.delete('/plans/comments/:commentId/like', authMiddleware, async (req, res
 
     res.json({
         result: 'success',
-        message: '성공',
+        message: '좋아요 취소 완료',
     });
 });
 
