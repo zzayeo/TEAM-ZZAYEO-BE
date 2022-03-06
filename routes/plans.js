@@ -20,7 +20,7 @@ const { deleteS3 } = require('../middlewares/deleteS3');
 // 전체 여행 불러오기
 router.get('/plans', authMiddleware, async (req, res) => {
     const { user } = res.locals;
-    let { page , destination, style } = req.query;
+    let { page, destination, style } = req.query;
 
     page === undefined || page < 0 ? (page = 1) : +page;
 
@@ -67,11 +67,10 @@ router.get('/plans', authMiddleware, async (req, res) => {
 //     const numPlans = await Plan.count({style : {$all : style}, status : '공개'})
 //     const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5)
 //     const findByStyle = await Plan.find({style : {$all : style}, status : '공개'}).sort('-createdAt').skip(5 * (page - 1)).limit(5).populate('userId likeCount bookmarkCount', 'snsId email nickname profile_img')
-    
-//     const plansLikeBookmark = await Plan.findLikeBookmark(findByStyle, user);
-    
-//     return res.json({ plans: plansLikeBookmark, endPage });
 
+//     const plansLikeBookmark = await Plan.findLikeBookmark(findByStyle, user);
+
+//     return res.json({ plans: plansLikeBookmark, endPage });
 
 // });
 
@@ -263,14 +262,18 @@ router.post(
 
         const findDay = await Day.findOne({ _id: dayId });
         const findPlan = await Plan.findOne({ _id: findDay.planId });
-        console.log(findPlan.planId);
+
         if (findPlan.destination === '국내') {
             const splited = address.split(' ');
-            console.log(splited);
             findPlan.locations.push(splited[1]);
             findPlan.locations.push(splited[2]);
-            console.log(splited[1], splited[2]);
         }
+        if (findPlan.destination === '해외') {
+            const country = address.match(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]+/)[0]; //배열에서 한글(정규표현식) 찾아서 변수에 담기
+            findPlan.locations.push(country);
+        }
+
+        findPlan.locations = [...new Set(findPlan.locations)]; // Set 자료형 사용하여 배열 내 중복값 제거 후 ...(Spread 연산자)로 List 로 변경
 
         await findPlan.save();
 
