@@ -57,6 +57,24 @@ router.get('/plans', authMiddleware, async (req, res) => {
     return res.json({ plans: plansLikeBookmark, endPage });
 });
 
+// //검색하기
+// router.get('/plans/search', authMiddleware, async (req, res) => {
+//     const { user } = res.locals;
+//     let { page , query } = req.query;
+
+//     page === undefined || page < 0 ? page = 1 : +page;
+
+//     const numPlans = await Plan.count({style : {$all : style}, status : '공개'})
+//     const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5)
+//     const findByStyle = await Plan.find({style : {$all : style}, status : '공개'}).sort('-createdAt').skip(5 * (page - 1)).limit(5).populate('userId likeCount bookmarkCount', 'snsId email nickname profile_img')
+    
+//     const plansLikeBookmark = await Plan.findLikeBookmark(findByStyle, user);
+    
+//     return res.json({ plans: plansLikeBookmark, endPage });
+
+
+// });
+
 // 북마크 여행 불러오기
 router.get('/plans/bookmark', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
