@@ -3,6 +3,19 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET_KEY } = process.env;
 
+const updateUserInfo = async (req, res, next) => {
+    try {
+        const { userId } = res.locals.user;
+        const { nickname } = req.body;
+        const { profile_img } = req.file;
+
+        await userService.updateUserInfo({ userId, nickname, profile_img });
+        res.status(200).json({ result: 'success', message: '업데이트 완료되었습니다.' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getMyInfo = async (req, res, next) => {
     try {
         const { user } = res.locals;
@@ -42,4 +55,4 @@ const kakaoCallback = (req, res, next) => {
     })(req, res, next);
 };
 
-module.exports = { kakaoCallback, getUserInfo, getMyInfo };
+module.exports = { kakaoCallback, getUserInfo, getMyInfo, updateUserInfo };
