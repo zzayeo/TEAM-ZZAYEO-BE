@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const User = require('../schemas/user');
-const Reply = require('../schemas/reply');
-const Like = require('../schemas/like');
-const Bookmark = require('../schemas/bookmark');
-const Place = require('../schemas/place');
-const Day = require('../schemas/day');
-const Comment = require('../schemas/comment');
+const User = require('./user');
+const Reply = require('./reply');
+const Like = require('./like');
+const Bookmark = require('./bookmark');
+const Place = require('./place');
+const Day = require('./day');
+const Comment = require('./comment');
 
 const PlanSchema = new mongoose.Schema(
     {

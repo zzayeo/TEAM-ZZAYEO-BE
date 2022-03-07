@@ -1,7 +1,7 @@
 const passport = require('passport');
 const router = express.Router();
 const KakaoStrategy = require('passport-kakao').Strategy;
-const User = require('../schemas/user');
+const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { kakaokey, kakaoSecretkey, JWT_SECRET_KEY } = process.env;
 

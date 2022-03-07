@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Reply = require('../schemas/reply');
-const Like = require('../schemas/like');
+const Reply = require('./reply');
+const Like = require('./like');
 
 const CommentSchema = new mongoose.Schema(
     {

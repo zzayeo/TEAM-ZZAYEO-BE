@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const connect = require('./schemas');
+const connect = require('./models');
 const cors = require('cors');
 
 const app = express();

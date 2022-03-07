@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 //스키마
-const User = require('../schemas/user');
-const Plan = require('../schemas/plan');
-const Reply = require('../schemas/reply');
-const Like = require('../schemas/like');
-const Bookmark = require('../schemas/bookmark');
-const Place = require('../schemas/place');
-const Day = require('../schemas/day');
-const Comment = require('../schemas/comment');
+const User = require('../models/user');
+const Plan = require('../models/plan');
+const Reply = require('../models/reply');
+const Like = require('../models/like');
+const Bookmark = require('../models/bookmark');
+const Place = require('../models/place');
+const Day = require('../models/day');
+const Comment = require('../models/comment');
 
 //미들웨어
 const authMiddleware = require('../middlewares/auth-middleware');

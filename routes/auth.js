@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-const User = require('../schemas/user');
+const User = require('../models/user');
 
 const KakaoStrategy = require('passport-kakao').Strategy;
 const jwt = require('jsonwebtoken');
