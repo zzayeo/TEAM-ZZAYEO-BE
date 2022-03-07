@@ -267,7 +267,7 @@ router.post('/plans/:planId/public', authMiddleware, async (req, res) => {
     const { status } = req.body;
 
     const findPlan = await Plan.findOne({ _id: planId });
-    if (findPlan.userId !== userId) {
+    if (findPlan.userId.toHexString() !== userId) {
         return res
             .status(401)
             .json({ result: 'fail', message: '본인의 여행만 변경할수 있습니다.' });
