@@ -61,7 +61,9 @@ router.get('/auth/kakao/callback', (req, res, next) => {
 router.get('/users/auth/me', authMiddleware, async (req, res) => {
     const { user } = res.locals;
     res.json({
-        userId: user.email,
+        userId: user._id,
+        snsId: user.snsId,
+        email: user.email,
         nickname: user.nickname,
         userImg: user.profile_img,
     });
