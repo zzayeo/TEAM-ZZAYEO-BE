@@ -74,13 +74,16 @@ router.get('/users/:userId', authMiddleware, async (req, res) => {
     const { user } = res.locals;
     const { userId } = req.params;
 
-    const loginUser = await User.findOne({ snsId: user.snsId });
-    const findUser = await User.findOne({ _id: userId });
+    const loginUser = await User.findOne({ snsId: user.snsId }).populate('plans');
+    const findUser = await User.findOne({ _id: userId }).populate({
+        path: 'plans',
+        match: { status: '공개' },
+    });
 
     if (loginUser.userId === findUser.userId) {
+        return res.json({ result: 'success', userInfo: loginUser });
     } else {
-        const findgood = await User.find;
-        return res.json({ user });
+        return res.json({ result: 'success', userInfo: findUser });
     }
 });
 
