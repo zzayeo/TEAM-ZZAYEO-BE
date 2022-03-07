@@ -1,16 +1,16 @@
 const mongoose = require('mongoose');
 
-const ChatmessageSchema = new mongoose.Schema(
+const ChatMessageSchema = new mongoose.Schema(
     {
-        planId: {
+        chatRoomId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Plan',
+            ref: 'Chatroom',
         },
-        userId: {
+        fromUserId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
-        userId2: {
+        toUserId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         },
@@ -24,4 +24,8 @@ const ChatmessageSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model('Chatmessage', ChatmessageSchema);
+ChatMessageSchema.virtual('chatMessageId').get(function () {
+    return this._id.toHexString();
+});
+
+module.exports = mongoose.model('ChatMessage', ChatMessageSchema);
