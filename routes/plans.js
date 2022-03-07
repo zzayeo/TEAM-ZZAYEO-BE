@@ -23,17 +23,19 @@ router.get('/plans', authMiddleware, async (req, res) => {
     let { page, destination, style } = req.query;
 
     page === undefined || page < 0 ? (page = 1) : +page;
+    destination === undefined ? (destination = ['국내', '해외']) : (destination = [detination]);
 
     if (typeof style === 'string') {
         style = [style];
     }
     console.log('스타일 :', style);
 
+    //카테고리 아무것도 선택 안했을 때
     if (style === undefined) {
-        const numPlans = await Plan.count({ status: '공개' });
+        const numPlans = await Plan.count({ detination: { $all: destination }, status: '공개' });
         console.log(numPlans);
         const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5);
-        const findPage = await Plan.find({ status: '공개' })
+        const findPage = await Plan.find({ detination: { $all: destination }, status: '공개' })
             .sort('-createdAt')
             .skip(5 * (page - 1))
             .limit(5)
@@ -44,7 +46,12 @@ router.get('/plans', authMiddleware, async (req, res) => {
         return res.json({ plans: plansLikeBookmark, endPage });
     }
 
-    const numPlans = await Plan.count({ style: { $all: style }, status: '공개' });
+    //카테고리 선택했을 때
+    const numPlans = await Plan.count({
+        destination: { $all: destination },
+        style: { $all: style },
+        status: '공개',
+    });
     const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5);
     const findByStyle = await Plan.find({ style: { $all: style }, status: '공개' })
         .sort('-createdAt')
