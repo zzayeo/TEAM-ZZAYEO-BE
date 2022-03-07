@@ -28,6 +28,12 @@ UserSchema.virtual('plans', {
     foreignField: 'userId',
 });
 
+UserSchema.virtual('chatRooms', {
+    ref: 'ChatRoom',
+    localField: '_id',
+    foreignField: 'userId',
+});
+
 UserSchema.virtual('likes', {
     ref: 'Like',
     localField: '_id',
