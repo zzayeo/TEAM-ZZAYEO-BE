@@ -10,7 +10,6 @@ const authMiddleware = require('../middlewares/auth-middleware');
 
 const { kakaokey, kakaoSecretkey, JWT_SECRET_KEY } = process.env;
 
-// module.exports = () => {
 passport.use(
     'kakao',
     new KakaoStrategy(
@@ -47,61 +46,17 @@ passport.use(
         }
     )
 );
-// };
-
-// passport.serializeUser(function (user, done) {
-//     // console.log(`user : ${user.profile.id}`)
-//     done(null, user);
-// });
-// passport.deserializeUser(function (obj, done) {
-//     // console.log(`obj : ${obj}`)
-//     done(null, obj);
-// });
 
 router.get('/auth/kakao', passport.authenticate('kakao'));
-
-// router.get(
-//     '/auth/kakao/callback',
-//     passport.authenticate('kakao', { failureRedirect: '/' }),
-//     (req, res) => {
-//         console.log(req.user);
-//         const token = jwt.sign({ snsId: req.user.snsId }, JWT_SECRET_KEY);
-
-//         // res.redirect('http://localhost:3000');
-//         // res.json(token);
-//         // console.log(token, header)
-//         res.render('http://localhost:3000', {token})
-//     }
-// );
 
 router.get('/auth/kakao/callback', (req, res, next) => {
     passport.authenticate('kakao', { failureRedirect: '/' }, (err, user) => {
         if (err) return next(err);
         const token = jwt.sign({ snsId: user.snsId }, JWT_SECRET_KEY);
 
-        // res.redirect('http://localhost:3000');
-        // res.json(token);
-        // console.log(token, header)
-        res.json({ token });
+        res.json({ token, userId: user.email });
     })(req, res, next);
 });
-
-// const kakaoCallback = (req, res, next) => {
-//     passport.authenticate(
-//       "kakao",
-//       { failureRedirect: "/" },
-//       (err, user, info) => {
-//         if (err) return next(err);
-//         const { userId, nick } = user;
-//         const token = jwt.sign({ userId, nick }, process.env.SECRET_KEY);
-//         result = {
-//           token,
-//           nick,
-//         };
-//         res.send({ user: result });
-//       }
-//     )(req, res, next);
-//   };
 
 router.get('/users/auth/me', authMiddleware, async (req, res) => {
     const { user } = res.locals;
