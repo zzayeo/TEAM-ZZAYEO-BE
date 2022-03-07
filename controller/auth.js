@@ -3,6 +3,22 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET_KEY } = process.env;
 
+const getMyInfo = async (req, res, next) => {
+    try {
+        const { user } = res.locals;
+        res.status(200).json({
+            result: 'success',
+            userId: user._id,
+            snsId: user.snsId,
+            email: user.email,
+            nickname: user.nickname,
+            userImg: user.profile_img,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getUserInfo = async (req, res, next) => {
     try {
         const { user } = res.locals;
@@ -26,4 +42,4 @@ const kakaoCallback = (req, res, next) => {
     })(req, res, next);
 };
 
-module.exports = { kakaoCallback, getUserInfo };
+module.exports = { kakaoCallback, getUserInfo, getMyInfo };
