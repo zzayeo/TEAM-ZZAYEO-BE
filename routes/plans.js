@@ -111,7 +111,10 @@ router.get('/plans/search', authMiddleware, async (req, res) => {
 router.get('/plans/bookmark', authMiddleware, async (req, res) => {
     const { userId } = res.locals.user;
 
-    const findBookmarks = await Bookmark.find({ userId }).populate('planId');
+    const findBookmarks = await Bookmark.find({ userId }).populate({
+        path: 'planId',
+        populate: { path: 'userId' },
+    });
 
     res.json({ plans: findBookmarks });
 });
