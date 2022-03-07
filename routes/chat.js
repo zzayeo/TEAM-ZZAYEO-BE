@@ -1,28 +1,16 @@
-// const express = require('express');
-// const router = express.Router();
-// const { Server } = require('socket.io');
+const express = require('express');
+const router = express.Router();
+const chatController = require('../controller/chatController');
 
-// //채팅클라이언트에 연결
-// io.on('connection', (socket) => {
-//     // console.log(socket,new Date().toLocaleTimeString())
-//     console.log(`User Connected: ${socket.id}`); //연결된 유저의 소켓아이디
+const authMiddleware = require('../middlewares/auth-middleware');
 
-//     //whereRoom에 참가하기
-//     socket.on('join-room', (whereRoom) => {
-//         socket.join(whereRoom);
-//         console.log(`User ID ${socket.id} 가 ${whereRoom} 에 입장`);
-//     });
+// 채팅방 목록 가져오기
+router.get('/chat/list', authMiddleware, chatController.getChatListByUserId);
 
-//     //whereRoom 내에서의 채팅로그
-//     socket.on('send_message', (chatLog) => {
-//         socket.to(chatLog.room).emit('receive_message', chatLog);
-//         console.log('채팅로그:', chatLog);
-//     });
+// 신규 채팅 확인
+router.get('/chat/new', authMiddleware, chatController.checkNewChat);
 
-//     //클라이언트와 연결 종료
-//     socket.on('disconnect', () => {
-//         console.log(socket.id, '의 연결이 끊어짐');
-//     });
-// });
+// 해당 채팅방 내용 가져오기
+router.get('/chat/:toSnsId', authMiddleware, chatController.getChatMessageByIds);
 
-// module.exports = router;
+module.exports = router;
