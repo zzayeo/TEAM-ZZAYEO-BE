@@ -15,6 +15,29 @@ const postReply = async (req, res, next) => {
     }
 };
 
+//댓글에 답글 수정
+const changeReply = async (req, res, next) => {
+    try {
+        const { userId } = res.locals.user;
+        const { replyId } = req.params;
+        const { content } = req.body;
+
+        const targetReply = await ReplyService.getTargetReply({ replyId });
+        if (targetReply.userId.toHexString() !== userId) {
+            return res.status(401).json({
+                result: 'false',
+                message: '본인의 답글만 수정할수있습니다',
+            });
+        }
+        await ReplyService.updateReply({ userId, content, replyId });
+
+        return res.json({ result: 'success', message: '수정 완료' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     postReply,
+    changeReply,
 };
