@@ -79,10 +79,20 @@ const deletePlan = async (req, res) => {
         });
     }
 };
+
+const getMyPlans = async (req, res) => {
+    const { userId } = res.locals.user;
+
+    const findplans = await planService.findAllPlanByUserId({ userId });
+
+    res.json({ plans: findplans });
+};
+
 module.exports = {
     getAllPlans,
     addNewPlan,
     getPlanByPlanId,
     changePlanStatus,
     deletePlan,
+    getMyPlans,
 };
