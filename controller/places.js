@@ -28,6 +28,18 @@ const postplaces = async (req, res, next) => {
     }
 };
 
+//여행 일정 삭제
+const deleteplaces = async (req, res, next) => {
+    try {
+        const { placeId } = req.params;
+
+        return res.json({ result: 'success', message: '삭제 완료' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     postplaces,
+    deleteplaces,
 };
