@@ -37,7 +37,27 @@ const changeReply = async (req, res, next) => {
     }
 };
 
+//댓글에 답글 삭제
+const deleteReply = async (req, res, next) => {
+    try {
+        const { userId } = res.locals.user;
+        const { replyId } = req.params;
+
+        const targetReply = await ReplyService.getTargetReply({ replyId });
+        if (targetReply.userId.toHexString() !== userId) {
+            return res.status(401).json({
+                result: 'false',
+                message: '본인의 답글만 삭제할수있습니다',
+            });
+        }
+
+        return res.json({ result: 'success', message: '삭제 완료' });
+    } catch (error) {
+        next(error);
+    }
+};
 module.exports = {
     postReply,
     changeReply,
+    deleteReply,
 };
