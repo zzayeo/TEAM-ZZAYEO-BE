@@ -1,5 +1,19 @@
 const planService = require('../services/plan');
 
+const getAllPlans = async (req, res) => {
+    const { user } = res.locals;
+    let { page, destination, style } = req.query;
+
+    const findAllPublicPlans = await planService.findAllPublicPlans({
+        page,
+        user,
+        destination,
+        style,
+    });
+
+    return res.json(findAllPublicPlans);
+};
+
 const addNewPlan = async (req, res) => {
     const { user } = res.locals;
     const { title, startDate, endDate, destination, style, withlist } = req.body;
@@ -54,7 +68,9 @@ const deletePlan = async (req, res) => {
     }
 };
 module.exports = {
+    getAllPlans,
     addNewPlan,
-    deletePlan,
+
     changePlanStatus,
+    deletePlan,
 };
