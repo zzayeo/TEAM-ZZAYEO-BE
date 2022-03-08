@@ -13,6 +13,18 @@ const getAllPlans = async (req, res) => {
 
     return res.json(findAllPublicPlans);
 };
+const getPlanByPlanId = async (req, res) => {
+    const { user } = res.locals;
+    const { planId } = req.params;
+
+    const findPlan = await planService.findOnePlanByPlanIdisLikeBookMark({ user, planId });
+
+    res.json({
+        result: 'success',
+        message: '성공',
+        plan: findPlan,
+    });
+};
 
 const addNewPlan = async (req, res) => {
     const { user } = res.locals;
@@ -70,7 +82,7 @@ const deletePlan = async (req, res) => {
 module.exports = {
     getAllPlans,
     addNewPlan,
-
+    getPlanByPlanId,
     changePlanStatus,
     deletePlan,
 };
