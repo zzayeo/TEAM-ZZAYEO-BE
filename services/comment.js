@@ -29,8 +29,14 @@ const createComment = async ({ userId, content, planId }) => {
     }
 };
 
+const getTargetComment = async ({ commentId }) => {
+    const targetComment = await Comment.findOne({ _id: commentId });
+    return targetComment;
+};
+
 module.exports = {
     getCommentByPlanId,
     getCommentLike,
-    createComment
+    createComment,
+    getTargetComment
 };
