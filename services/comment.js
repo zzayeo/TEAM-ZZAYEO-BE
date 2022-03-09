@@ -8,6 +8,12 @@ const getCommentByPlanId = async ({ planId }) => {
     return getComment;
 };
 
+const getCommentLike = async (foundComment, user) => {
+    const commentLike = await Comment.findLike(foundComment, user);
+     return commentLike;
+ };
+
 module.exports = {
-    getCommentByPlanId
+    getCommentByPlanId,
+    getCommentLike
 };
