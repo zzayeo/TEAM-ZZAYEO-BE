@@ -21,7 +21,21 @@ const findBookmarkByUserIdAndPlanId = async ({ userId, planId }) => {
     return findBookmark;
 };
 
+//userId와 planId로 북마크콜렉션에 도큐먼트 생성하기
+const createBookmark = async ({ userId, planId }) => {
+    try {
+        await Bookmark.create({
+            userId,
+            planId,
+        });
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getBookmarkByUserId,
-    findBookmarkByUserIdAndPlanId
+    findBookmarkByUserIdAndPlanId,
+    createBookmark
 };
