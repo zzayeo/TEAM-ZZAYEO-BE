@@ -87,9 +87,9 @@ const getChatMessageByRoomNum = async ({ fromSnsId, toSnsId, roomNum, page }) =>
                 chatRoomId: findChatRoom.chatRoomId,
             })
                 .sort('createdAt')
-                .skip(20 * (page - 1))
-                .limit(20)
-                .populate('');
+                // .skip(20 * (page - 1))
+                // .limit(20)
+                .populate('fromUserId toUserId');
 
             // 채팅을 누가 읽느냐에 따라서 리턴값이 달라짐.
             // 프론트 쪽에서 원하는 형식에 맞게 구성해서 리턴(프론트요청)
