@@ -69,7 +69,26 @@ const updataplaces = async ({ placeId, placeName, lat, lng, address, time, memoT
     return;
 };
 
+//여행 일정 삭제
+const placesdelete = async ({ userId, placeId }) => {
+    const targetplaces = await Place.findOne({ _id: placeId });
+    if (targetplaces.userId.toHexString() !== userId) {
+        return res.json({
+            result: 'false',
+            message: '본인의 일정만 삭제할수있습니다',
+        });
+    } else {
+        await Place.deleteOne({ _id: placeId });
+        res.json({
+            result: 'success',
+            message: '성공',
+        });
+        return;
+    }
+};
+
 module.exports = {
     createplaces,
-    updataplaces
+    updataplaces,
+    placesdelete,
 };
