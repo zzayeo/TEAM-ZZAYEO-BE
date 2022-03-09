@@ -3,16 +3,16 @@ const ChatRoom = require('../models/chatroom');
 const ChatMessage = require('../models/chatmessage');
 const User = require('../models/user');
 
-const findAndUpdateChatRoom = async ({ snsId, toSnsId, roomNum }) => {
+const findAndUpdateChatRoom = async ({ fromSnsId, toSnsId, roomNum }) => {
     try {
-        console.log(snsId, toSnsId, roomNum);
-        if (!snsId || !toSnsId || !roomNum) {
+        console.log(fromSnsId, toSnsId, roomNum);
+        if (!fromSnsId || !toSnsId || !roomNum) {
             //   throw customizedError(MESSAGE.WRONG_REQ, 400);
             throw new Error('잘못된 요청입니다.');
         }
 
         const findChatRoom = await ChatRoom.findOne({ roomNum });
-        const findUser = await User.findOne({ snsId });
+        const findUser = await User.findOne({ snsId: fromSnsId });
         const findUser2 = await User.findOne({ snsId: toSnsId });
 
         // 기존 채팅 방이 없으면 생성 후 리턴
@@ -29,6 +29,7 @@ const findAndUpdateChatRoom = async ({ snsId, toSnsId, roomNum }) => {
             chatRoomId: findChatRoom.chatRoomId,
             fromUserId: findUser2,
         }).updateMany({ checkChat: 'true' });
+
         return;
     } catch (error) {
         throw error;
