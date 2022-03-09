@@ -48,6 +48,28 @@ const createplaces = async ({ dayId, placeName, lat, lng, address, time, memoTex
     return;
 };
 
+//여행 일정 수정
+const updataplaces = async ({ placeId, placeName, lat, lng, address, time, memoText }) => {
+    const findPlace = await Place.findOneAndUpdate(
+        { _id: placeId },
+        { placeName, lat, lng, address, time, memoText }
+    );
+
+    // for(let i=0; i< videoUrl.length; i++) {
+    //     findPlace.memoImage.push(videoUrl[i].location)
+    // }
+
+    for (let i = 0; i < imageUrl.length; i++) {
+        findPlace.memoImage.push(imageUrl[i].location);
+    }
+
+    if (memoText) updatePlace.memoText = memoText;
+
+    await findPlace.save();
+    return;
+};
+
 module.exports = {
     createplaces,
+    updataplaces
 };
