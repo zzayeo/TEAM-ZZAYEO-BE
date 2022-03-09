@@ -52,6 +52,37 @@ const findAllPublicPlans = async ({ page, user, destination, style }) => {
     }
 };
 
+const createPlan = async ({ user, title, startDate, endDate, destination, style, withlist }) => {
+    const newPlan = new Plan({
+        userId: user.userId,
+        nickname: user.nickname,
+        title,
+        startDate,
+        endDate,
+        destination,
+        style,
+        withlist,
+    });
+
+    // 여행일정 day 계산 후 저장
+    const sDate = new Date(startDate);
+    const eDate = new Date(endDate);
+
+    const diffDate = sDate.getTime() - eDate.getTime();
+    const dateDays = Math.abs(diffDate / (1000 * 3600 * 24));
+
+    await newPlan.save();
+
+    for (let i = 1; i <= dateDays + 1; i++) {
+        const newDay = await Day.create({
+            planId: newPlan._id,
+            dayNumber: i,
+        });
+    }
+    return newPlan;
+};
+
 module.exports = {
     findAllPublicPlans,
+    createPlan,
 };
