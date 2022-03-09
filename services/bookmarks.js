@@ -34,8 +34,22 @@ const createBookmark = async ({ userId, planId }) => {
     }
 };
 
+//userId와 planId로 북마크콜렉션에서 도큐먼트 삭제하기
+const deleteBookmark = async ({ userId, planId }) => {
+    try {
+        await Bookmark.deleteOne({
+            userId,
+            planId,
+        });
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getBookmarkByUserId,
     findBookmarkByUserIdAndPlanId,
-    createBookmark
+    createBookmark,
+    deleteBookmark
 };
