@@ -43,10 +43,20 @@ const updateComment = async ({ commentId, content }) => {
     }
 };
 
+const deleteComment = async ({ commentId }) => {
+    try {
+        await Comment.deleteOne({ _id: commentId });
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getCommentByPlanId,
     getCommentLike,
     createComment,
     getTargetComment,
-    updateComment
+    updateComment,
+    deleteComment
 };
