@@ -34,9 +34,19 @@ const getTargetComment = async ({ commentId }) => {
     return targetComment;
 };
 
+const updateComment = async ({ commentId, content }) => {
+    try {
+        await Comment.updateOne({ _id: commentId }, { $set: { content } });
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     getCommentByPlanId,
     getCommentLike,
     createComment,
-    getTargetComment
+    getTargetComment,
+    updateComment
 };
