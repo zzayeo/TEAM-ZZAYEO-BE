@@ -11,6 +11,12 @@ const createReply = async ({ userId, content, planId, commentId }) => {
     return;
 };
 
+const getTargetReply = async ({ replyId }) => {
+    const targetReply = await Reply.findOne({ _id: replyId });
+    return targetReply;
+};
+
 module.exports = {
     createReply,
+    getTargetReply,
 };
