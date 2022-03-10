@@ -102,9 +102,15 @@ const changePlanByPlanId = async ({ targetPlan, status }) => {
     return;
 };
 
+const deletePlanByPlanId = async ({ planId }) => {
+    await Plan.deleteOne({ _id: planId });
+    return;
+};
+
 module.exports = {
     findAllPublicPlans,
     createPlan,
     findOnePlanByPlanIdisLikeBookMark,
     changePlanByPlanId,
+    deletePlanByPlanId,
 };
