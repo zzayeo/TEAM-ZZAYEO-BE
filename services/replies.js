@@ -22,8 +22,15 @@ const updateReply = async ({ content, replyId }) => {
     return;
 };
 
+//댓글에 답글 삭제
+const deleteReply = async ({ replyId }) => {
+    await Reply.deleteOne({ _id: replyId });
+    return;
+};
+
 module.exports = {
     createReply,
     getTargetReply,
     updateReply,
+    deleteReply,
 };
