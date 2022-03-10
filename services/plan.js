@@ -82,7 +82,21 @@ const createPlan = async ({ user, title, startDate, endDate, destination, style,
     return newPlan;
 };
 
+const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
+    const plan = await Plan.findOne({ _id: planId })
+        .populate({
+            path: 'days',
+            populate: { path: 'places' },
+        })
+        .populate('userId likeCount bookmarkCount');
+
+    const planLikeBookmark = await Plan.findLikeBookmark([plan], user);
+
+    return planLikeBookmark[0];
+};
+
 module.exports = {
     findAllPublicPlans,
     createPlan,
+    findOnePlanByPlanIdisLikeBookMark,
 };
