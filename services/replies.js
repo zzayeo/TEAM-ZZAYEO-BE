@@ -16,7 +16,14 @@ const getTargetReply = async ({ replyId }) => {
     return targetReply;
 };
 
+//댓글에 답글 수정
+const updateReply = async ({ content, replyId }) => {
+    await Reply.updateOne({ _id: replyId }, { $set: { content } });
+    return;
+};
+
 module.exports = {
     createReply,
     getTargetReply,
+    updateReply,
 };
