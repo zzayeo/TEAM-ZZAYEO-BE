@@ -95,8 +95,16 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
     return planLikeBookmark[0];
 };
 
+const changePlanByPlanId = async ({ targetPlan, status }) => {
+    targetPlan.status = status;
+
+    await targetPlan.save();
+    return;
+};
+
 module.exports = {
     findAllPublicPlans,
     createPlan,
     findOnePlanByPlanIdisLikeBookMark,
+    changePlanByPlanId,
 };
