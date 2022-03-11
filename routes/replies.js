@@ -1,15 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const ReplyController = require('../controller/replies');
-//스키마
-const Reply = require('../models/reply');
 
 //미들웨어
 const authMiddleware = require('../middlewares/auth-middleware');
 const { ROUTE } = require('../config/constants');
 
-//답글 생성
+//여행 댓글에 답글 작성
 router.post(ROUTE.REPLIES.ADD, authMiddleware, ReplyController.postReply);
+//여행 댓글에 답글 삭제
+router.delete(ROUTE.REPLIES.DELETE, authMiddleware, ReplyController.deleteReply);
+//답글 수정
+router.patch(ROUTE.REPLIES.UPDATE, authMiddleware, ReplyController.changeReply);
+
+//여행 댓글에 답글 작성
 // router.post('/plans/comments/:commentId/reply', authMiddleware, async (req, res) => {
 //     const { userId } = res.locals.user;
 //     const { content } = req.body;
@@ -30,7 +34,7 @@ router.post(ROUTE.REPLIES.ADD, authMiddleware, ReplyController.postReply);
 // });
 
 //답글 수정
-router.patch(ROUTE.REPLIES.UPDATE, authMiddleware, ReplyController.changeReply);
+
 // router.patch(ROUTE.REPLIES.UPDATE, authMiddleware, async (req, res) => {
 //     const { userId } = res.locals.user;
 //     const { replyId } = req.params;
@@ -51,7 +55,7 @@ router.patch(ROUTE.REPLIES.UPDATE, authMiddleware, ReplyController.changeReply);
 // });
 
 //여행 댓글에 답글 삭제
-router.delete(ROUTE.REPLIES.DELETE, authMiddleware, ReplyController.deleteReply);
+
 // router.delete('/plans/comments/replies/:replyId', authMiddleware, async (req, res) => {
 //         const { userId } = res.locals.user;
 //         const { replyId } = req.params;
