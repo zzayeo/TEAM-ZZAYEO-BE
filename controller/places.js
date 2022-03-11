@@ -4,7 +4,7 @@ const PlacesService = require('../services/places');
 const postplaces = async (req, res, next) => {
     try {
         const { dayId } = req.params;
-        const { placeName, lat, lng, address, time, memoText } = req.body;
+        const { placeName, lat, lng, address, time, memoText, gemotry } = req.body;
 
         // let videoUrl = [];
         let imageUrl = [];
@@ -12,7 +12,7 @@ const postplaces = async (req, res, next) => {
         // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
         req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
-        const Places = await PlacesService.createplaces({
+        await PlacesService.createplaces({
             dayId,
             placeName,
             lat,
@@ -20,6 +20,7 @@ const postplaces = async (req, res, next) => {
             address,
             time,
             memoText,
+            gemotry,
         });
 
         return res.json({ result: 'success', message: '작성 완료' });
@@ -40,7 +41,7 @@ const patchplaces = async (req, res, next) => {
         // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
         req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
-        const Places = await PlacesService.createplaces({
+        await PlacesService.createplaces({
             placeId,
             placeName,
             lat,
