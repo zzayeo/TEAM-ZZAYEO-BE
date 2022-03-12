@@ -18,6 +18,18 @@ router.post(
     ]),
     placesController.postplaces
 );
+//여행 장소 및 내용 수정하기
+router.patch(
+    ROUTE.PLACES.UPDATE,
+    authMiddleware,
+    upload.fields([
+        // { name: 'videoFile', maxCount: 1 },
+        { name: 'imageFile', maxCount: 10 },
+    ]),
+    placesController.patchplaces
+);
+//특정 장소 삭제하기
+router.delete(ROUTE.PLACES.DELETE, authMiddleware, placesController.deleteplaces);
 // router.post('/plans/days/:dayId', upload.fields([
 //         // { name: 'videoFile', maxCount: 1 },
 //         { name: 'imageFile', maxCount: 10 },
@@ -82,15 +94,6 @@ router.post(
 // );
 
 //여행 장소 및 내용 수정하기
-router.patch(
-    ROUTE.PLACES.UPDATE,
-    authMiddleware,
-    upload.fields([
-        // { name: 'videoFile', maxCount: 1 },
-        { name: 'imageFile', maxCount: 10 },
-    ]),
-    placesController.postplaces
-);
 // router.post(
 //     '/plans/days/places/:placeId',
 //     authMiddleware,
@@ -129,7 +132,6 @@ router.patch(
 // );
 
 //특정 장소 삭제하기
-router.delete(ROUTE.PLACES.DELETE, authMiddleware, placesController.deleteplaces);
 // async (req, res) => {
 //     const { placeId } = req.params;
 //     await Place.deleteOne({ _id: placeId });
