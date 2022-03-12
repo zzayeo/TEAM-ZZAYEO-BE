@@ -32,9 +32,6 @@ const PlaceSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
-        gemotry: {
-            type: Object,
-        },
     },
     { timestamps: true }
 );
