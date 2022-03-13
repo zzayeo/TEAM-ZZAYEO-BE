@@ -20,9 +20,15 @@ const findAllPublicPlans = async ({ page, user, destination, style }) => {
     }
     console.log('스타일 :', style);
     if (style === undefined) {
-        const numPlans = await Plan.count({ destination: { $in: destination }, status: '공개' });
+        const numPlans = await Plan.count({
+            destination: { $in: destination },
+            status: '공개',
+        });
         const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5);
-        const findPage = await Plan.find({ destination: { $in: destination }, status: '공개' })
+        const findPage = await Plan.find({
+            destination: { $in: destination },
+            status: '공개',
+        })
             .sort('-createdAt')
             .skip(5 * (page - 1))
             .limit(5)
