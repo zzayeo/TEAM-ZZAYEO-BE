@@ -20,7 +20,6 @@ const postplaces = async (req, res, next) => {
             address,
             time,
             memoText,
-            gemotry,
         });
 
         return res.json({ result: 'success', message: '작성 완료' });

@@ -88,6 +88,24 @@ const getMyPlans = async (req, res) => {
     res.json({ plans: findplans });
 };
 
+const addNewThumbnail = async (req, res) => {
+    const { userId } = res.locals.user;
+    const { planId } = req.params;
+    console.log(req.file);
+    const { location } = req.file;
+
+    const findPlan = await planService.findOnePlanByPlanId({ planId });
+    if (findPlan.userId.toHexString() !== userId) {
+        return res.status(401).json({
+            result: 'fail',
+            message: '본인의 여행만 변경할수 있습니다.',
+        });
+    }
+    await planService.addThumbnail({ thumbnailImage: location, planId });
+
+    return res.status(200).json({ result: 'success', message: '변경 완료 되었습니다.' });
+};
+
 module.exports = {
     getAllPlans,
     addNewPlan,
@@ -95,4 +113,5 @@ module.exports = {
     changePlanStatus,
     deletePlan,
     getMyPlans,
+    addNewThumbnail,
 };
