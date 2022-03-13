@@ -1,4 +1,3 @@
-const User = require('../models/user');
 const Plan = require('../models/plan');
 const Day = require('../models/day');
 
@@ -80,7 +79,7 @@ const createPlan = async ({ user, title, startDate, endDate, destination, style,
     await newPlan.save();
 
     for (let i = 1; i <= dateDays + 1; i++) {
-        const newDay = await Day.create({
+        await Day.create({
             planId: newPlan._id,
             dayNumber: i,
         });
