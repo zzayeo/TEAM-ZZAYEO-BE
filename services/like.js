@@ -22,68 +22,56 @@ const findLikeByUserIdAndIdAndType = async ({ userId, Id, type }) => {
     if (type === 'reply') {
         const findLike = await Like.findOne({ userId, replyId: Id });
 
-        if (findLike !== null) {
-            return;
-        }
         return findLike;
     }
 };
 
 //userId와 planId로 Like콜렉션에 도큐먼트 생성하기
 const createLike = async ({ userId, Id, type }) => {
-    try {
-        if (type === 3) {
-            await Like.create({
-                userId,
-                planId: Id,
-            });
-            return;
-        }
-        if (type === 4) {
-            await Like.create({
-                userId,
-                commentId: Id,
-            });
-            return;
-        }
-        if (type === 5) {
-            await Like.create({
-                userId,
-                replyId: Id,
-            });
-            return;
-        }
-    } catch (error) {
-        throw error;
+    if (type === 3) {
+        await Like.create({
+            userId,
+            planId: Id,
+        });
+        return;
+    }
+    if (type === 4) {
+        await Like.create({
+            userId,
+            commentId: Id,
+        });
+        return;
+    }
+    if (type === 5) {
+        await Like.create({
+            userId,
+            replyId: Id,
+        });
+        return;
     }
 };
-
 //userId와 planId로 Like콜렉션에서 도큐먼트 삭제하기
-const deleteLike = async ({ planId, userId }) => {
-    try {
-        if (type === 3) {
-            await Like.deleteOne({
-                userId,
-                planId: Id,
-            });
-            return;
-        }
-        if (type === 4) {
-            await Like.deleteOne({
-                userId,
-                commentId: Id,
-            });
-            return;
-        }
-        if (type === 5) {
-            await Like.deleteOne({
-                userId,
-                replyId: Id,
-            });
-            return;
-        }
-    } catch (error) {
-        throw error;
+const deleteLike = async ({ Id, userId, type }) => {
+    if (type === 3) {
+        await Like.deleteOne({
+            userId,
+            planId: Id,
+        });
+        return;
+    }
+    if (type === 4) {
+        await Like.deleteOne({
+            userId,
+            commentId: Id,
+        });
+        return;
+    }
+    if (type === 5) {
+        await Like.deleteOne({
+            userId,
+            replyId: Id,
+        });
+        return;
     }
 };
 

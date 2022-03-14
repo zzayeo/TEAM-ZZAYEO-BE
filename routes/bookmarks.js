@@ -5,9 +5,6 @@ const { ROUTE } = require('../config/constants');
 //컨트롤러
 const bookmarkController = require('../controller/bookmark');
 
-//스키마
-const Bookmark = require('../models/bookmark');
-
 //미들웨어
 const authMiddleware = require('../middlewares/auth-middleware');
 
