@@ -32,6 +32,7 @@ io.on('connection', (socket) => {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
             await chatService.findAndUpdateChatRoom({ fromSnsId, toSnsId, roomName });
             socket.join(roomName);
+            io.to(roomName).emit('join', toSnsId);
             socket.leave(fromSnsId);
         } catch (error) {
             console.log(error);
