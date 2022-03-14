@@ -37,7 +37,7 @@ const findAndUpdateChatRoom = async ({ fromSnsId, toSnsId, roomNum }) => {
 };
 
 // 채팅 내용 저장 api
-const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNum }) => {
+const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNum, createdAt }) => {
     try {
         const findChatRoom = await ChatRoom.findOne({ roomNum });
         if (!findChatRoom) {
@@ -54,6 +54,7 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
             chatText,
             checkChat,
             chatRoomId: findChatRoom.chatRoomId,
+            createdAt,
         });
 
         findChatRoom.lastChat = ChatMessage.chatMessageId;

@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
     });
 
     // socket room (chat)
-    socket.on('room', async ({ fromSnsId, toSnsId, chatText }) => {
+    socket.on('room', async ({ fromSnsId, toSnsId, chatText, createdAt }) => {
         try {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
 
@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
                 fromSnsId,
                 chatText,
                 checkChat,
+                createdAt,
             };
 
             await chatService.saveChatMessage({
