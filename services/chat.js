@@ -48,7 +48,7 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
         const findUser = await User.findOne({ snsId: fromSnsId });
         const findUser2 = await User.findOne({ snsId: toSnsId });
 
-        await ChatMessage.create({
+        const createChat = await ChatMessage.create({
             fromUserId: findUser.userId,
             toUserId: findUser2.userId,
             chatText,
@@ -57,7 +57,7 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
             createdAt,
         });
 
-        findChatRoom.lastChat = ChatMessage.chatMessageId;
+        findChatRoom.lastChat = createChat.chatMessageId;
         await findChatRoom.save();
         return;
     } catch (error) {
