@@ -128,12 +128,17 @@ const getChatRoomList = async ({ userId }) => {
         // 채팅방 목록 불러온 사람이 무조건 userId 가 되게 변경
         for (let i = 0; i < findChatRoomList.length; i++) {
             const myUserInfo = findChatRoomList[i].userId;
+            const notReadCount = await ChatMessage.count({
+                chatRoomId: findChatRoomList[i].chatRoomId,
+                toUserId: userId,
+                checkChat: false,
+            });
             if (findChatRoomList[i].userId2.userId === userId) {
                 findChatRoomList[i]._doc.userId = findChatRoomList[i].userId2;
                 findChatRoomList[i]._doc.userId2 = myUserInfo;
             }
+            findChatRoomList[i]._doc.notReadCount = notReadCount;
         }
-
         return findChatRoomList;
     } catch (error) {
         throw error;
