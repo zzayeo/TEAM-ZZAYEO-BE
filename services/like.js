@@ -6,17 +6,11 @@ const findLikeByUserIdAndIdAndType = async ({ userId, Id, type }) => {
     if (type === 'plan') {
         const findLike = await Like.findOne({ userId, planId: Id });
 
-        if (findLike !== null) {
-            return;
-        }
         return findLike;
     }
     if (type === 'comment') {
         const findLike = await Like.findOne({ userId, commentId: Id });
 
-        if (findLike !== null) {
-            return;
-        }
         return findLike;
     }
     if (type === 'reply') {
