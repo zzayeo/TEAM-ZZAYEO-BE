@@ -90,5 +90,5 @@ const deleteLike = async ({ planId, userId }) => {
 module.exports = {
     findLikeByUserIdAndIdAndType,
     createLike,
-    deleteLike
+    deleteLike,
 };
