@@ -48,7 +48,7 @@ const cancelLike = async (req, res) => {
     });
     console.log(findLike);
 
-    if (findLike) {
+    if (!findLike) {
         return res.status(401).json({ result: 'fail', message: '이미 북마크 취소했습니다.' });
     }
 
