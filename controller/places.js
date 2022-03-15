@@ -1,60 +1,52 @@
 const PlacesService = require('../services/places');
 
 //여행 일정 추가
-const postplaces = async (req, res, next) => {
-    try {
-        const { dayId } = req.params;
-        const { placeName, lat, lng, address, time, memoText } = req.body;
+const postplaces = async (req, res) => {
+    const { dayId } = req.params;
+    const { placeName, lat, lng, address, time, memoText } = req.body;
 
-        // let videoUrl = [];
-        let imageUrl = [];
+    // let videoUrl = [];
+    let imageUrl = [];
 
-        // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
-        req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
+    // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
+    req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
-        await PlacesService.createplaces({
-            dayId,
-            placeName,
-            lat,
-            lng,
-            address,
-            time,
-            memoText,
-        });
+    await PlacesService.createplaces({
+        dayId,
+        placeName,
+        lat,
+        lng,
+        address,
+        time,
+        memoText,
+    });
 
-        return res.json({ result: 'success', message: '작성 완료' });
-    } catch (error) {
-        next(error);
-    }
+    return res.json({ result: 'success', message: '작성 완료' });
 };
 
 //여행 일정 수정
-const patchplaces = async (req, res, next) => {
-    try {
-        const { placeId } = req.params;
-        const { placeName, lat, lng, address, time, memoText } = req.body;
+const patchplaces = async (req, res) => {
+    const { placeId } = req.params;
+    const { placeName, lat, lng, address, time, memoText } = req.body;
 
-        // let videoUrl = [];
-        let imageUrl = [];
+    // let videoUrl = [];
+    let imageUrl = [];
 
-        // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
-        req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
+    // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
+    req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
-        await PlacesService.updateplaces({
-            placeId,
-            placeName,
-            lat,
-            lng,
-            address,
-            time,
-            memoText,
-            imageUrl,
-        });
+    await PlacesService.updateplaces({
+        placeId,
+        placeName,
+        lat,
+        lng,
+        address,
+        time,
+        memoText,
+        imageUrl,
+    });
 
-        return res.json({ result: 'success', message: '수정 완료' });
-    } catch (error) {
-        next(error);
-    }
+    return res.json({ result: 'success', message: '수정 완료' });
 };
 
 //여행 일정 삭제
