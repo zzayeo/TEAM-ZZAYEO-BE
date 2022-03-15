@@ -60,8 +60,10 @@ const patchplaces = async (req, res, next) => {
 //여행 일정 삭제
 const deleteplaces = async (req, res, next) => {
     try {
+        const { userId } = res.locals.user;
         const { placeId } = req.params;
 
+        await PlacesService.placesdelete({ userId, placeId });
         return res.json({ result: 'success', message: '삭제 완료' });
     } catch (error) {
         next(error);
