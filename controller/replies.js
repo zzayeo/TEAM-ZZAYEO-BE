@@ -7,7 +7,7 @@ const postReply = async (req, res, next) => {
         const { content } = req.body;
         const { planId, commentId } = req.params;
 
-        const Replies = await ReplyService.createReply({ userId, content, planId, commentId });
+        await ReplyService.createReply({ userId, content, planId, commentId });
 
         return res.json({ result: 'success', message: '작성 완료' });
     } catch (error) {
@@ -50,7 +50,7 @@ const deleteReply = async (req, res, next) => {
                 message: '본인의 답글만 삭제할수있습니다',
             });
         }
-
+        await ReplyService.deleteReply({ replyId });
         return res.json({ result: 'success', message: '삭제 완료' });
     } catch (error) {
         next(error);
