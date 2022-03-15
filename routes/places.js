@@ -19,7 +19,7 @@ router.post(
     placesController.postplaces
 );
 //여행 장소 및 내용 수정하기
-router.patch(
+router.post(
     ROUTE.PLACES.UPDATE,
     authMiddleware,
     upload.fields([

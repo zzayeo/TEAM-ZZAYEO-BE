@@ -49,7 +49,7 @@ const createplaces = async ({ dayId, placeName, lat, lng, address, time, memoTex
 };
 
 //여행 일정 수정
-const updataplaces = async ({ placeId, placeName, lat, lng, address, time, memoText }) => {
+const updateplaces = async ({ placeId, placeName, lat, lng, address, time, memoText }) => {
     const findPlace = await Place.findOneAndUpdate(
         { _id: placeId },
         { placeName, lat, lng, address, time, memoText }
@@ -63,7 +63,7 @@ const updataplaces = async ({ placeId, placeName, lat, lng, address, time, memoT
         findPlace.memoImage.push(imageUrl[i].location);
     }
 
-    if (memoText) updatePlace.memoText = memoText;
+    if (memoText) updateplaces.memoText = memoText;
 
     await findPlace.save();
     return;
@@ -89,6 +89,6 @@ const placesdelete = async ({ userId, placeId }) => {
 
 module.exports = {
     createplaces,
-    updataplaces,
+    updateplaces,
     placesdelete,
 };
