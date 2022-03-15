@@ -52,6 +52,7 @@ const ROUTE = {
         ADD: '/plans/days/:dayId',
         UPDATE: '/plans/days/places/:placeId',
         DELETE: '/plans/days/places/:placeId',
+        IMAGE_DELETE: '/plans/days/places/:placeId/:imageIndex',
     },
 };
 
