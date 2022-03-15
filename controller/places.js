@@ -19,6 +19,7 @@ const postplaces = async (req, res) => {
         address,
         time,
         memoText,
+        imageUrl,
     });
 
     return res.json({ result: 'success', message: '작성 완료' });
@@ -49,6 +50,18 @@ const patchplaces = async (req, res) => {
     return res.json({ result: 'success', message: '수정 완료' });
 };
 
+//여행 일정 이미지 삭제
+const deletePlaceImage = async (req, res) => {
+    const { placeId, imageIndex } = req.params;
+
+    await PlacesService.deleteMemoImageInPlace({
+        placeId,
+        imageIndex,
+    });
+
+    return res.json({ result: 'success', message: '이미지 삭제 완료' });
+};
+
 //여행 일정 삭제
 const deleteplaces = async (req, res) => {
     const { userId } = res.locals.user;
@@ -70,4 +83,5 @@ module.exports = {
     postplaces,
     patchplaces,
     deleteplaces,
+    deletePlaceImage,
 };

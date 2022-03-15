@@ -1,6 +1,7 @@
 const Place = require('../models/place');
 const Day = require('../models/day');
 const Plan = require('../models/reply');
+const deleteS3 = require('../middlewares/deleteS3');
 
 //대상 장소 찾기
 const getTargetPlace = async ({ PlaceId }) => {
@@ -75,6 +76,14 @@ const updateplaces = async ({ placeId, placeName, lat, lng, address, time, memoT
     return;
 };
 
+//여행 일정 이미지 삭제
+const deleteMemoImageInPlace = async ({ placeId, imageIndex }) => {
+    const findPlace = await Place.findOne({ _id: placeId });
+    const deleteImage = findPlace.memoImage.splice(imageIndex, 1);
+    deleteS3(deleteImage);
+    await findPlace.save();
+};
+
 //여행 일정 삭제
 const placesdelete = async ({ placeId }) => {
     await Place.deleteOne({ _id: placeId });
@@ -87,4 +96,5 @@ module.exports = {
     updateplaces,
     placesdelete,
     getTargetPlace,
+    deleteMemoImageInPlace,
 };
