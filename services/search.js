@@ -21,7 +21,6 @@ const getSearch = async ({ page, query, style, user }) => {
         const plansLikeBookmark = await Plan.findLikeBookmark(findPage, user);
 
         return { plans: plansLikeBookmark, endPage };
-        // return res.json({ plans: plansLikeBookmark, endPage });
     }
 
     const numPlans = await Plan.count({
@@ -45,7 +44,6 @@ const getSearch = async ({ page, query, style, user }) => {
     const plansLikeBookmark = await Plan.findLikeBookmark(findByStyle, user);
 
     return { plans: plansLikeBookmark, endPage };
-    // return res.json({ plans: plansLikeBookmark, endPage });
 };
 
 module.exports = {

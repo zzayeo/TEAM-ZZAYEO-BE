@@ -12,7 +12,6 @@ const PlanSchema = new mongoose.Schema(
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            // foreignFields: '_id',
         },
         title: {
             type: String,
@@ -37,7 +36,7 @@ const PlanSchema = new mongoose.Schema(
             type: String,
         },
         thumbnailImage: {
-            type: String
+            type: String,
         },
         startDate: {
             type: String,
@@ -74,8 +73,6 @@ PlanSchema.virtual('likeCount', {
 });
 
 PlanSchema.statics.findLikeBookmark = async function (foundPlan, user) {
-    // const findPaging = await this.find().sort('-createdAt').skip(5 * (page - 1)).limit(5).populate('userId likeCount bookmarkCount', 'snsId email nickname profile_img').exec();
-    // console.log(this)
     console.log(user);
     if (user === undefined) {
         for (let i = 0; i < foundPlan.length; i++) {
