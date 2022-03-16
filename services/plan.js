@@ -128,6 +128,16 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
 
     const planLikeBookmark = await Plan.findLikeBookmark([plan], user);
 
+    const findPlaces = await Place.find({ planId });
+    let allImages = [];
+    for (let place of findPlaces) {
+        for (let image of place.memoImage) {
+            allImages.push(image);
+        }
+    }
+
+    planLikeBookmark[0]._doc.allImages = allImages;
+
     return planLikeBookmark[0];
 };
 
@@ -152,5 +162,5 @@ module.exports = {
     findOnePlanByPlanId,
     findAllPlanByUserId,
     calculateDays,
-    updatePlan
+    updatePlan,
 };
