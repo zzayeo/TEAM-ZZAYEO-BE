@@ -18,6 +18,7 @@
     "multer-s3": "^2.10.0",
     "passport": "^0.5.2",
     "passport-kakao": "^1.0.1",
+    "socket.io": "^4.4.1",
     "uniqid": "^5.4.0"
   }
 }
