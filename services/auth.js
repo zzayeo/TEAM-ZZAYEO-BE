@@ -32,7 +32,23 @@ const findUserInfoByUserId = async ({ myUserId, otherUserId }) => {
     return otherUserInfo;
 };
 
+const deleteUser = async ({ userId}) => {
+    try {
+        const findUser = await User.findOne({ _id: userId });
+        if (!findUser.profile_img.includes('kakaocdn')) {
+            deleteS3([findUser.profile_img]);
+        }
+        findUser.nickname = '(탈퇴한 계정)'
+        findUser.snsId = ''
+
+        return;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     findUserInfoByUserId,
     updateUserInfo,
+    deleteUser
 };
