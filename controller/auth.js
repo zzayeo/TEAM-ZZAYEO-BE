@@ -60,4 +60,18 @@ const kakaoCallback = (req, res, next) => {
     })(req, res, next);
 };
 
-module.exports = { kakaoCallback, getUserInfo, getMyInfo, updateUserInfo };
+const withdrawalUser = async (req, res, next) => {
+    try {
+        const { userId } = res.locals.user;
+        await userService.deleteUser({ userId });
+
+        res.status(200).json({
+            result: 'success',
+            message: '탈퇴 완료',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { kakaoCallback, getUserInfo, getMyInfo, updateUserInfo, withdrawalUser };
