@@ -89,6 +89,35 @@ const createPlan = async ({ user, title, startDate, endDate, destination, style,
     return newPlan;
 };
 
+const updatePlan = async ({ planId, title, startDate, endDate, destination, style, withlist }) => {
+    const findPlan = await Plan.findOne({ _id: planId });
+    let beforeDays = calculateDays(findPlan.startDate, findPlan.endDate);
+    let updateDays = calculateDays(startDate, endDate);
+    let diffDays = Math.abs(beforeDays - updateDays);
+    if (beforeDays < updateDays) {
+        for (let i = beforeDays + 2; i <= beforeDays + diffDays + 1; i++) {
+            const newDay = await Day.create({
+                planId: findPlan._id,
+                dayNumber: i,
+            });
+        }
+    }
+    if (beforDays > updateDays) {
+        await Day.deleteMany({ planId }, { $gt: { dayNumber: updateDays + 1 } });
+    }
+
+    findPlan.title = title;
+    findPlan.startDate = startDate;
+    findPlan.endDate = endDate;
+    findPlan.destination = destination;
+    findPlan.style = style;
+    findPlan.withlist = withlist;
+
+    await findPlan.save();
+
+    return findPlan;
+};
+
 const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
     const plan = await Plan.findOne({ _id: planId })
         .populate({
@@ -123,4 +152,5 @@ module.exports = {
     findOnePlanByPlanId,
     findAllPlanByUserId,
     calculateDays,
+    updatePlan
 };
