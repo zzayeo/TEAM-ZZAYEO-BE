@@ -18,5 +18,6 @@ router.post(
     imageUploader,
     authController.updateUserInfo
 );
+router.delete(ROUTE.AUTH.WITHDRAW,  authMiddleware, authController.withdrawalUser)
 
 module.exports = router;
