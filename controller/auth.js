@@ -7,9 +7,14 @@ const updateUserInfo = async (req, res, next) => {
     try {
         const { userId } = res.locals.user;
         const { nickname } = req.body;
-        const { location } = req.file;
+        let profile_img = '';
+        if (req.file) profile_img = req.file.location;
 
-        await userService.updateUserInfo({ userId, nickname, location });
+        await userService.updateUserInfo({
+            userId,
+            nickname,
+            profile_img,
+        });
         res.status(200).json({ result: 'success', message: '업데이트 완료되었습니다.' });
     } catch (error) {
         next(error);
