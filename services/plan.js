@@ -149,6 +149,14 @@ const changePlanByPlanId = async ({ targetPlan, status }) => {
 };
 
 const deletePlanByPlanId = async ({ planId }) => {
+    const findPlaces = await Place.find({ planId });
+    let S3DeleteList = [];
+    for (let place of findPlaces) {
+        for (let image of place.memoImage) {
+            S3DeleteList.push(image);
+        }
+    }
+    deleteS3(S3DeleteList);
     await Plan.deleteOne({ _id: planId });
     return;
 };
