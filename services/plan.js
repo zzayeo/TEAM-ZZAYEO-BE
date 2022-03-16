@@ -1,5 +1,8 @@
+const User = require('../models/user');
 const Plan = require('../models/plan');
+const Place = require('../models/place');
 const Day = require('../models/day');
+const deleteS3 = require('../utils/deleteS3');
 
 const findOnePlanByPlanId = async ({ planId }) => {
     const findPlan = await Plan.findOne({ _id: planId });
@@ -57,6 +60,13 @@ const findAllPublicPlans = async ({ page, user, destination, style }) => {
     }
 };
 
+const calculateDays = (start, end) => {
+    let sDate = new Date(start);
+    let eDate = new Date(end);
+    let diffDate = sDate.getTime() - eDate.getTime();
+    return Math.abs(diffDate / (1000 * 3600 * 24));
+};
+
 const createPlan = async ({ user, title, startDate, endDate, destination, style, withlist }) => {
     const newPlan = new Plan({
         userId: user.userId,
@@ -68,17 +78,9 @@ const createPlan = async ({ user, title, startDate, endDate, destination, style,
         style,
         withlist,
     });
-
-    // 여행일정 day 계산 후 저장
-    const sDate = new Date(startDate);
-    const eDate = new Date(endDate);
-
-    const diffDate = sDate.getTime() - eDate.getTime();
-    const dateDays = Math.abs(diffDate / (1000 * 3600 * 24));
-
     await newPlan.save();
 
-    for (let i = 1; i <= dateDays + 1; i++) {
+    for (let i = 1; i <= calculateDays(startDate, endDate) + 1; i++) {
         await Day.create({
             planId: newPlan._id,
             dayNumber: i,
@@ -120,4 +122,5 @@ module.exports = {
     deletePlanByPlanId,
     findOnePlanByPlanId,
     findAllPlanByUserId,
+    calculateDays,
 };

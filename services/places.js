@@ -1,7 +1,7 @@
 const Place = require('../models/place');
 const Day = require('../models/day');
 const Plan = require('../models/reply');
-const deleteS3 = require('../middlewares/deleteS3');
+const deleteS3 = require('../utils/deleteS3');
 
 //대상 장소 찾기
 const getTargetPlace = async ({ PlaceId }) => {
