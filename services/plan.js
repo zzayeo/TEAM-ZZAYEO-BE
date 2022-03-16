@@ -161,6 +161,18 @@ const deletePlanByPlanId = async ({ planId }) => {
     return;
 };
 
+const addThumbnail = async ({ thumbnailImage, planId }) => {
+    try {
+        const findPlan = await Plan.findOne({ _id: planId });
+        if (findPlan.thumbnailImage) deleteS3([findPlan.thumbnailImage]);
+        findPlan.thumbnailImage = thumbnailImage;
+        await findPlan.save();
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
     findAllPublicPlans,
     createPlan,
@@ -170,5 +182,6 @@ module.exports = {
     findOnePlanByPlanId,
     findAllPlanByUserId,
     calculateDays,
+    addThumbnail,
     updatePlan,
 };
