@@ -94,16 +94,19 @@ const updatePlan = async ({ planId, title, startDate, endDate, destination, styl
     let beforeDays = calculateDays(findPlan.startDate, findPlan.endDate);
     let updateDays = calculateDays(startDate, endDate);
     let diffDays = Math.abs(beforeDays - updateDays);
+
     if (beforeDays < updateDays) {
-        for (let i = beforeDays + 2; i <= beforeDays + diffDays + 1; i++) {
-            const newDay = await Day.create({
+        for (let i = beforeDays + 2; i <= updateDays + 1; i++) {
+            await Day.create({
                 planId: findPlan._id,
                 dayNumber: i,
             });
         }
     }
-    if (beforDays > updateDays) {
-        await Day.deleteMany({ planId }, { $gt: { dayNumber: updateDays + 1 } });
+    if (beforeDays > updateDays) {
+        for (let i = beforeDays+1; i > updateDays+1; i--) {
+            await Day.deleteOne({ planId, dayNumber: i})
+        }
     }
 
     findPlan.title = title;

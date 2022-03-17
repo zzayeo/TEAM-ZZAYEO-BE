@@ -2,8 +2,6 @@ const AWS = require('aws-sdk');
 const { S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY, S3_REGION, BUCKET_NAME } = process.env;
 
 module.exports = (uriList) => {
-    console.log(uriList);
-    console.log(typeof uriList);
     const S3 = new AWS.S3({
         accessKeyId: S3_ACCESS_KEY_ID,
         secretAccessKey: S3_SECRET_ACCESS_KEY,
@@ -28,6 +26,6 @@ module.exports = (uriList) => {
     S3.deleteObjects(params, (err, data) => {
         if (err) console.log(err, err.stack);
         // an error occurred
-        else console.log(data);
+        else console.log('사진 삭제 완료');
     });
 };
