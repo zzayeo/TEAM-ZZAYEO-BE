@@ -25,5 +25,7 @@ router.post(ROUTE.PLAN.ADD_THUMBNAIL, authMiddleware, imageUploder, planControll
 router.get(ROUTE.PLAN.GET_MY, authMiddleware, planController.getMyPlans);
 // 여행 수정하기
 router.patch(ROUTE.PLAN.UPDATE ,authMiddleware, planController.updatePlanInfo);
+// 여행 복사하기
+router.post(ROUTE.PLAN.COPY, authMiddleware, planController.copyPlan);
 
 module.exports = router;
