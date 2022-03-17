@@ -26,16 +26,34 @@ const getChatMessageByIds = async (req, res, next) => {
     return res.status(200).json({ result: 'success', chatMessages: getChat });
 };
 
-const getChatListByUserId = async (req, res, next) => {
+const getChatListByUserId = async (req, res) => {
     const { userId } = res.locals.user;
     const findChatRoom = await chatService.getChatRoomList({ userId });
     return res.status(200).json({ result: 'success', chatRoomList: findChatRoom });
 };
 
-const checkNewChat = async (req, res, next) => {
+const checkNewChat = async (req, res) => {
     const { userId } = res.locals.user;
     const newChatMessage = await chatService.checkChat({ userId });
     res.status(200).json({ result: 'success', newChatMessage });
 };
 
-module.exports = { getChatListByUserId, getChatMessageByIds, checkNewChat };
+// 채팅방 삭제
+const deletechatroom = async (req, res) => {
+    const { userId } = res.locals.user;
+    const { chatroomId } = req.params;
+
+    const targetchatroom = await chatService.getTargetchatroom({ chatroomId });
+    if (targetchatroom.userId.toHexString() !== userId) {
+        return res
+            .status(200)
+            .json({ result: 'false', message: '본인의 채팅방만 삭제할수있습니다' });
+    }
+    await chatService.deletechatroom({ chatroomId });
+    res.json({
+        result: 'success',
+        message: '성공',
+    });
+};
+
+module.exports = { getChatListByUserId, getChatMessageByIds, checkNewChat, deletechatroom };
