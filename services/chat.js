@@ -82,10 +82,17 @@ const getChatMessageByRoomNum = async ({ fromSnsId, toSnsId, roomNum, page }) =>
         }
 
         const findChatRoom = await ChatRoom.findOne({ roomNum });
+        if (findChatRoom.outUser === myProfile.userId) {
+            findChatRoom.outUser = '';
+            await findChatRoom.save();
+        }
 
         if (findChatRoom) {
             const findChatMessages = await ChatMessage.find({
-                chatRoomId: findChatRoom.chatRoomId,
+                $and: [
+                    { chatRoomId: findChatRoom.chatRoomId },
+                    { $not: { outUser: myProfile.userId } },
+                ],
             })
                 .sort('createdAt')
                 // .skip(20 * (page - 1))
@@ -175,19 +182,19 @@ const checkChat = async ({ userId }) => {
 };
 
 const getTargetchatroom = async ({ chatroomId }) => {
-    const targetchatroom = await ChatRoom.findOne({ _id: chatroomId })
+    const targetchatroom = await ChatRoom.findOne({ _id: chatroomId });
     return targetchatroom;
-}
+};
 
 // 채팅방 삭제
 const deletechatroom = async ({ chatroomId }) => {
     try {
-        await ChatRoom.deleteOne({ _id : chatroomId })
-            return;
+        await ChatRoom.deleteOne({ _id: chatroomId });
+        return;
     } catch (error) {
         throw error;
     }
-}
+};
 
 module.exports = {
     findAndUpdateChatRoom,
@@ -196,5 +203,5 @@ module.exports = {
     getChatRoomList,
     checkChat,
     getTargetchatroom,
-    deletechatroom
+    deletechatroom,
 };
