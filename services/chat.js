@@ -186,15 +186,26 @@ const getTargetchatroom = async ({ chatroomId }) => {
     return targetchatroom;
 };
 
-// 채팅방 삭제
-const deletechatroom = async ({ chatroomId }) => {
-    try {
-        await ChatRoom.deleteOne({ _id: chatroomId });
+const getOutChatRoom = async ({ chatroomId, userId }) => {
+    const findChatRoom = await ChatRoom.findOne({ _id: chatroomId });
+    if(findChatRoom.outUser === '') {
+        findChatRoom.outUser = userId
+        await findChatRoom.save()
+        const findChatMessages = await ChatMessage.find({ chatroomId })
+        for(let message of findChatMessages) {
+            if(message.outUser) {
+                await ChatMessage.deleteOne({ _id : message._id})
+            } else {
+                message.outUser = userId
+                await message.save();
+            }
+        }
         return;
-    } catch (error) {
-        throw error;
+    } else {
+        await ChatRoom.deleteOne({ _id : chatroomId })
+        return;
     }
-};
+}
 
 module.exports = {
     findAndUpdateChatRoom,
@@ -203,5 +214,5 @@ module.exports = {
     getChatRoomList,
     checkChat,
     getTargetchatroom,
-    deletechatroom,
+    getOutChatRoom
 };
