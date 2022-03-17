@@ -131,6 +131,15 @@ const updatePlanInfo = async (req, res) => {
     return res.status(200).json({ result: 'success', message: '변경 완료 되었습니다.' });
 };
 
+const copyPlan = async (req, res) => {
+    const { user } = res.locals;
+    const { planId } = req.params;
+
+    await planService.copyPlanByPlanId({ planId, user });
+
+    return res.status(200).json({ result: 'success', message: '복사 완료 되었습니다.' });
+};
+
 module.exports = {
     getAllPlans,
     addNewPlan,
@@ -140,4 +149,5 @@ module.exports = {
     getMyPlans,
     addNewThumbnail,
     updatePlanInfo,
+    copyPlan,
 };
