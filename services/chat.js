@@ -147,28 +147,47 @@ const getChatRoomList = async ({ userId }) => {
 
 // 채팅을 읽었는지 확인하는 api
 const checkChat = async ({ userId }) => {
-    const findChatRoomList = await ChatRoom.find({
-        $or: [{ userId }, { userId2: userId }],
-    }).populate({
-        path: 'lastChat',
-        populate: { path: 'fromUserId toUserId' },
-    });
+    try {
+        const findChatRoomList = await ChatRoom.find({
+            $or: [{ userId }, { userId2: userId }],
+        }).populate({
+            path: 'lastChat',
+            populate: { path: 'fromUserId toUserId' },
+        });
 
-    let newChatMessage = false;
-    if (!findChatRoomList) {
-        return newChatMessage;
-    }
-
-    for (let i = 0; i < findChatRoomList.length; i++) {
-        let lastChat = findChatRoomList[i].lastChat;
-        if (findChatRoomList[i].lastChat) {
-            if (lastChat.checkChat === false && lastChat.fromUserId.userId !== userId)
-                return (newChatMessage = true);
+        let newChatMessage = false;
+        if (!findChatRoomList) {
+            return newChatMessage;
         }
-    }
 
-    return newChatMessage;
+        for (let i = 0; i < findChatRoomList.length; i++) {
+            let lastChat = findChatRoomList[i].lastChat;
+            if (findChatRoomList[i].lastChat) {
+                if (lastChat.checkChat === false && lastChat.fromUserId.userId !== userId)
+                    return (newChatMessage = true);
+            }
+        }
+
+        return newChatMessage;
+    } catch (error) {
+        throw error;
+    }
 };
+
+const getTargetchatroom = async ({ chatroomId }) => {
+    const targetchatroom = await ChatRoom.findOne({ _id: chatroomId })
+    return targetchatroom;
+}
+
+// 채팅방 삭제
+const deletechatroom = async ({ chatroomId }) => {
+    try {
+        await ChatRoom.deleteOne({ _id : chatroomId })
+            return;
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     findAndUpdateChatRoom,
@@ -176,4 +195,6 @@ module.exports = {
     getChatMessageByRoomNum,
     getChatRoomList,
     checkChat,
+    getTargetchatroom,
+    deletechatroom
 };
