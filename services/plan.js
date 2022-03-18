@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const User = require('../models/user');
 const Plan = require('../models/plan');
 const Place = require('../models/place');
@@ -216,7 +217,7 @@ const copyPlanByPlanId = async ({ planId, user }) => {
         }
         findPlan.scrapCount++;
         await findPlan.save();
-        return;
+        return newPlan;
     } catch (error) {
         throw error;
     }
