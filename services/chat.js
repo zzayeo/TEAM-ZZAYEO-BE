@@ -58,6 +58,7 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
         });
 
         findChatRoom.lastChat = createChat.chatMessageId;
+        if (findChatRoom.outUser !== '') findChatRoom.outUser = '';
         await findChatRoom.save();
         return;
     } catch (error) {
@@ -123,7 +124,7 @@ const getChatRoomList = async ({ userId }) => {
     try {
         //userId가 속해 있는 채팅방을 찾아내고 연결되어있는 lastChat과 from,to를 가져온다.
         const findChatRoomList = await ChatRoom.find({
-            $or: [{ userId }, { userId2: userId }, {$not : {outUser: userId}}],
+            $or: [{ userId }, { userId2: userId }, { $not: { outUser: userId } }],
         }).populate({
             path: 'lastChat userId userId2',
         });
@@ -188,24 +189,24 @@ const getTargetchatroom = async ({ chatroomId }) => {
 
 const getOutChatRoom = async ({ chatroomId, userId }) => {
     const findChatRoom = await ChatRoom.findOne({ _id: chatroomId });
-    if(findChatRoom.outUser === '') {
-        findChatRoom.outUser = userId
-        await findChatRoom.save()
-        const findChatMessages = await ChatMessage.find({ chatroomId })
-        for(let message of findChatMessages) {
-            if(message.outUser) {
-                await ChatMessage.deleteOne({ _id : message._id})
+    if (findChatRoom.outUser === '') {
+        findChatRoom.outUser = userId;
+        await findChatRoom.save();
+        const findChatMessages = await ChatMessage.find({ chatroomId });
+        for (let message of findChatMessages) {
+            if (message.outUser) {
+                await ChatMessage.deleteOne({ _id: message._id });
             } else {
-                message.outUser = userId
+                message.outUser = userId;
                 await message.save();
             }
         }
         return;
     } else {
-        await ChatRoom.deleteOne({ _id : chatroomId })
+        await ChatRoom.deleteOne({ _id: chatroomId });
         return;
     }
-}
+};
 
 module.exports = {
     findAndUpdateChatRoom,
@@ -214,5 +215,5 @@ module.exports = {
     getChatRoomList,
     checkChat,
     getTargetchatroom,
-    getOutChatRoom
+    getOutChatRoom,
 };
