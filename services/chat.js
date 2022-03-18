@@ -124,7 +124,14 @@ const getChatRoomList = async ({ userId }) => {
     try {
         //userId가 속해 있는 채팅방을 찾아내고 연결되어있는 lastChat과 from,to를 가져온다.
         const findChatRoomList = await ChatRoom.find({
-            $or: [{ userId }, { userId2: userId }, { $not: { outUser: userId } }],
+            $and: [
+                {
+                    $or: [{ userId }, { userId2: userId }],
+                },
+                {
+                    outUser: { $ne: userId },
+                },
+            ],
         }).populate({
             path: 'lastChat userId userId2',
         });
