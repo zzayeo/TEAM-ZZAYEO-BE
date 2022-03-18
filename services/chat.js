@@ -92,7 +92,7 @@ const getChatMessageByRoomNum = async ({ fromSnsId, toSnsId, roomNum, page }) =>
             const findChatMessages = await ChatMessage.find({
                 $and: [
                     { chatRoomId: findChatRoom.chatRoomId },
-                    { $not: { outUser: myProfile.userId } },
+                    { outUser: { $ne: myProfile.userId } },
                 ],
             })
                 .sort('createdAt')
