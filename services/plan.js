@@ -194,6 +194,7 @@ const copyPlanByPlanId = async ({ planId, user }) => {
             style: findPlan.style,
             withlist: findPlan.withlist,
             locations: findPlan.locations,
+            copyplan: '가져온 여행',
         });
 
         await newPlan.save();
