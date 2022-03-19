@@ -117,7 +117,7 @@ const updatePlan = async ({ planId, title, startDate, endDate, destination, styl
     findPlan.style = style;
     findPlan.withlist = withlist;
 
-    await findPlan.save();
+    await findPlan.save({ timestamps: false });
 
     return findPlan;
 };
@@ -170,7 +170,7 @@ const addThumbnail = async ({ thumbnailImage, planId }) => {
         const findPlan = await Plan.findOne({ _id: planId });
         if (findPlan.thumbnailImage) deleteS3([findPlan.thumbnailImage]);
         findPlan.thumbnailImage = thumbnailImage;
-        await findPlan.save();
+        await findPlan.save({ timestamps: false });
         return;
     } catch (error) {
         throw error;
@@ -217,7 +217,7 @@ const copyPlanByPlanId = async ({ planId, user }) => {
             }
         }
         findPlan.scrapCount++;
-        await findPlan.save();
+        await findPlan.save({ timestamps: false });
         return newPlan;
     } catch (error) {
         throw error;
