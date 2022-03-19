@@ -7,6 +7,24 @@ const SOCKET_CORS = {
     methods: ['GET', 'POST'],
 };
 
+const DIRECTORY = {
+    PLAN: {
+        destination: ['국내', '해외'],
+        style: [
+            '액티비티 체험',
+            '문화 예술 역사 체험',
+            '명소 관광지 방문 필수',
+            '페스티벌 참여',
+            '먹방 투어',
+            '쇼핑 좋아',
+            '편하게 쉬는 휴양',
+            'SNS 핫플 투어',
+            '호캉스',
+            '자연 친화',
+        ],
+    },
+};
+
 const ROUTE = {
     INDEX: '/',
     BOOKMARK: {
@@ -53,7 +71,7 @@ const ROUTE = {
         GET_MY_INFOMATION: '/users/auth/me',
         GET_USERS_INFOMATION: '/users/:userId',
         UPDATE_MY_INFOMATION: '/users/auth/me',
-        WITHDRAW: '/users/auth/me'
+        WITHDRAW: '/users/auth/me',
     },
     PLACES: {
         ADD: '/plans/days/:dayId',
@@ -65,12 +83,13 @@ const ROUTE = {
         GET_MY_CHATROOMLIST: '/chat/list',
         GET_MY_NEWCHAT: '/chat/new',
         GET_MY_CHATMESSAGE: '/chat/:toSnsId',
-        DELETE: '/chat/:chatroomId'
-    }
+        DELETE: '/chat/:chatroomId',
+    },
 };
 
 module.exports = {
     SOCKET_CORS,
     MESSAGE,
     ROUTE,
+    DIRECTORY,
 };
