@@ -51,5 +51,5 @@ module.exports = {
     getBookmarkByUserId,
     findBookmarkByUserIdAndPlanId,
     createBookmark,
-    deleteBookmark
+    deleteBookmark,
 };
