@@ -24,6 +24,16 @@ const getMostLikedPlans = async (req, res) => {
     });
 };
 
+const getMostBookMarkedPlans = async (req, res) => {
+    const findPlans = await planService.findBookMarkPlanByDate();
+
+    return res.json({
+        result: 'success',
+        message: '성공',
+        plans: findPlans,
+    });
+};
+
 const getPlanByPlanId = async (req, res) => {
     const { user } = res.locals;
     const { planId } = req.params;
@@ -164,4 +174,5 @@ module.exports = {
     updatePlanInfo,
     copyPlan,
     getMostLikedPlans,
+    getMostBookMarkedPlans,
 };
