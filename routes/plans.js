@@ -9,6 +9,10 @@ const imageUploder = upload.single('imageFile');
 
 const { ROUTE } = require('../config/constants');
 
+// 이번달 북마크 검색
+router.get(ROUTE.PLAN.GET_HOT_BOOKMARK, authMiddleware, planController.getMostBookMarkedPlans);
+// 이번달 좋아요 검색
+router.get(ROUTE.PLAN.GET_HOT_LIKE, authMiddleware, planController.getMostLikedPlans);
 // 전체 여행 불러오기
 router.get(ROUTE.PLAN.GET_ALL, authMiddleware, planController.getAllPlans);
 // 여행 생성하기
@@ -24,7 +28,7 @@ router.post(ROUTE.PLAN.ADD_THUMBNAIL, authMiddleware, imageUploder, planControll
 // 나의 여행 불러오기
 router.get(ROUTE.PLAN.GET_MY, authMiddleware, planController.getMyPlans);
 // 여행 수정하기
-router.patch(ROUTE.PLAN.UPDATE ,authMiddleware, planController.updatePlanInfo);
+router.patch(ROUTE.PLAN.UPDATE, authMiddleware, planController.updatePlanInfo);
 // 여행 복사하기
 router.post(ROUTE.PLAN.COPY, authMiddleware, planController.copyPlan);
 
