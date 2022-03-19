@@ -4,6 +4,20 @@ const Plan = require('../models/plan');
 const Place = require('../models/place');
 const Day = require('../models/day');
 const deleteS3 = require('../utils/deleteS3');
+const { DIRECTORY } = require('../config/constants');
+
+const firstDayCalculator = (now) => {
+    const dateNow = now;
+    dateNow.setDate(1);
+    return dateNow;
+};
+
+const nextMonthCalculator = (now) => {
+    const nextMonth = now;
+    nextMonth.setDate(1);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    return nextMonth;
+};
 
 const findOnePlanByPlanId = async ({ planId }) => {
     const findPlan = await Plan.findOne({ _id: planId });
