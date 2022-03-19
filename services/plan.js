@@ -96,6 +96,74 @@ const findLikePlanByDate = async () => {
     return thisMonthPlan;
 };
 
+const findBookMarkPlanByDate = async () => {
+    const thisMonthPlan = await Plan.aggregate()
+        .match({
+            status: '공개',
+            updatedAt: {
+                $gte: firstDayCalculator(new Date()),
+                $lt: nextMonthCalculator(new Date()),
+            },
+        })
+        .lookup({
+            from: 'likes',
+            localField: '_id',
+            foreignField: 'planId',
+            as: 'planLikes',
+        })
+        .lookup({
+            from: 'bookmarks',
+            localField: '_id',
+            foreignField: 'planId',
+            as: 'planBookMarks',
+        })
+        .addFields({
+            bookmarkCount: { $size: '$planBookMarks' },
+            likeCount: { $size: '$planLikes' },
+        })
+        .sort('-bookmarkCount')
+        .limit(10)
+        .lookup({
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userInfo',
+        })
+        .unwind('$userInfo')
+        .project({
+            _id: 0,
+            planId: { $toString: '$_id' },
+            userId: {
+                userId: '$userInfo._id',
+                email: '$userInfo.email',
+                nickname: '$userInfo.nickname',
+                snsId: '$userInfo.snsId',
+                profile_img: '$userInfo.profile_img',
+            },
+            title: 1,
+            nickname: 1,
+            locations: 1,
+            destination: 1,
+            style: 1,
+            status: 1,
+            startDate: 1,
+            endDate: 1,
+            createdAt: 1,
+            updatedAt: 1,
+            withlist: 1,
+            scrapCount: 1,
+            thumbnailImage: 1,
+            likeCount: 1,
+            bookmarkCount: 1,
+            planLikes: 0,
+            planBookMarks: 0,
+        });
+
+    console.log(thisMonthPlan);
+
+    return thisMonthPlan;
+};
+
 const findAllPublicPlans = async ({ page, user, destination, style }) => {
     page === undefined || page < 0 ? (page = 1) : +page;
     destination === undefined ? (destination = ['국내', '해외']) : (destination = [destination]);
@@ -319,4 +387,5 @@ module.exports = {
     updatePlan,
     copyPlanByPlanId,
     findLikePlanByDate,
+    findBookMarkPlanByDate,
 };
