@@ -13,6 +13,17 @@ const getAllPlans = async (req, res) => {
 
     return res.json(findAllPublicPlans);
 };
+
+const getMostLikedPlans = async (req, res) => {
+    const findPlans = await planService.findLikePlanByDate();
+
+    return res.json({
+        result: 'success',
+        message: '성공',
+        plans: findPlans,
+    });
+};
+
 const getPlanByPlanId = async (req, res) => {
     const { user } = res.locals;
     const { planId } = req.params;
@@ -152,4 +163,5 @@ module.exports = {
     addNewThumbnail,
     updatePlanInfo,
     copyPlan,
+    getMostLikedPlans,
 };
