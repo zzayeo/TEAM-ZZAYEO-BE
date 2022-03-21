@@ -100,6 +100,11 @@ const ROUTE = {
         GET_MY_CHATMESSAGE: '/chat/:toSnsId',
         DELETE: '/chat/:chatroomId',
     },
+    NOTICE: {
+        GET_MY: '/notice',
+        DELETE_NOTICE: '/notice/:noticeMessageId',
+        DELETE_ALL_NOTICE: '/notice',
+    },
 };
 
 module.exports = {
