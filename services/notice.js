@@ -5,4 +5,24 @@ const Comment = require('../models/comment');
 
 const { NOTICE_EVENT: EVENT } = require('../config/constants');
 
-module.exports = {};
+const findAllNotice = async ({ user, next }) => {
+    try {
+        const findBoard = await NoticeBoard.findOne({
+            userId: user.userId,
+        }).populate({
+            path: 'notices',
+            populate: { path: 'sentUser', select: 'profile_img' },
+        });
+        await NoticeMessage.where({
+            noticeBoardId: findBoard.noticeBoardId,
+        }).updateMany({ checkNotice: 'true' });
+
+        return findBoard.notices;
+    } catch (error) {
+        throw next(error);
+    }
+};
+
+module.exports = {
+    findAllNotice,
+};
