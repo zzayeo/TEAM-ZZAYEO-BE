@@ -46,6 +46,43 @@ const createNewNoticeBoard = async ({ user }) => {
     }
 };
 
+const createNewCommentReplyNoticeMessage = async ({ sentUser, document, type }) => {
+    try {
+        let text = '';
+        let findBoardOwner = '';
+        if (type === 'comment') {
+            text = EVENT.COMMENT.PLAN;
+            findBoardOwner = await Plan.findOne({ _id: document.planId });
+        }
+        if (type === 'reply') {
+            text = EVENT.COMMENT.COMMENT;
+            findBoardOwner = await Comment.findOne({ _id: document.commentId });
+        }
+
+        if (sentUser.userId === findBoardOwner.userId.toHexString()) {
+            return;
+        }
+
+        const findBoard = await NoticeBoard.findOne({
+            userId: findBoardOwner.userId,
+        });
+
+        const newMessage = new NoticeMessage({
+            noticeBoardId: findBoard.noticeBoardId,
+            noticeType: 'CommentReply',
+            whereEvent: type,
+            sentUser: sentUser.userId,
+            planId: document.planId,
+            noticeTitle: `${sentUser.nickname} ${text}`,
+        });
+
+        await newMessage.save();
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const deleteNotice = async ({ user, id }) => {
     try {
         await NoticeMessage.deleteOneNotice({
@@ -74,6 +111,7 @@ const deleteAllNotice = async ({ user }) => {
 module.exports = {
     findAllNotice,
     createNewNoticeBoard,
+    createNewCommentReplyNoticeMessage,
     deleteNotice,
     deleteAllNotice,
 };
