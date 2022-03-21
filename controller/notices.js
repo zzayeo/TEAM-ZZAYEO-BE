@@ -19,6 +19,18 @@ const getAllNotice = async (req, res) => {
     });
 };
 
+const deleteOneNotice = async (req, res) => {
+    const { noticeMessageId } = req.params;
+
+    await NoticeService.deleteNotice({ id: noticeMessageId });
+
+    res.json({
+        result: 'success',
+        message: '삭제 완료되었습니다.',
+    });
+};
+
 module.exports = {
     getAllNotice,
+    deleteOneNotice,
 };

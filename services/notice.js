@@ -23,6 +23,29 @@ const findAllNotice = async ({ user, next }) => {
     }
 };
 
+const createNewNoticeBoard = async ({ user, next }) => {
+    try {
+        const findExistBoard = await NoticeBoard.findOne({
+            boardNum: user.snsId,
+            userId: user.userId,
+        });
+
+        if (findExistBoard) return;
+        else {
+            const newBoard = new NoticeBoard({
+                boardNum: user.snsId,
+                userId: user.userId,
+            });
+
+            await newBoard.save();
+            return;
+        }
+    } catch (error) {
+        throw next(error);
+    }
+};
+
 module.exports = {
     findAllNotice,
+    createNewNoticeBoard,
 };
