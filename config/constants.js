@@ -25,6 +25,21 @@ const DIRECTORY = {
     },
 };
 
+const NOTICE_EVENT = {
+    LIKE: {
+        PLAN: '님이 회원님의 여행을 좋아합니다.',
+        COMMENT: '님이 회원님의 댓글을 좋아합니다.',
+        REPLY: '님이 회원님의 답글을 좋아합니다.',
+    },
+    COMMENT: {
+        PLAN: '님이 회원님의 여행에 댓글을 남겼습니다.',
+        COMMENT: '님이 회원님의 댓글에 답글을 남겼습니다.',
+    },
+    MESSAGE: {
+        CHAT: '님이 메세지를 보냈습니다.',
+    },
+};
+
 const ROUTE = {
     INDEX: '/',
     BOOKMARK: {
@@ -92,4 +107,5 @@ module.exports = {
     MESSAGE,
     ROUTE,
     DIRECTORY,
+    NOTICE_EVENT,
 };
