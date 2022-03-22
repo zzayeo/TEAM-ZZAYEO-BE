@@ -1,16 +1,21 @@
+/* eslint-disable no-useless-catch */
 //스키마
 const Bookmark = require('../models/bookmark');
+const Plan = require('../models/plan');
 
 //userId로 populate해서 북마크 된 plan 모두 가져오기
-const getBookmarkByUserId = async ({ userId }) => {
-    const getBookmarks = await Bookmark.find({ userId }).populate({
+const getBookmarkByUserId = async ({ user }) => {
+    const getBookmarks = await Bookmark.find({ userId: user.userId }).populate({
         path: 'planId',
         populate: { path: 'userId' },
     });
 
+    for (let bookmark of getBookmarks) {
+        await Plan.findLikeBookmark([bookmark.planId], user);
+    }
+
     return getBookmarks;
 };
-
 //userId와 planId로 DB에 있는지 확인하기
 const findBookmarkByUserIdAndPlanId = async ({ userId, planId }) => {
     const findBookmark = await Bookmark.findOne({ userId, planId });
