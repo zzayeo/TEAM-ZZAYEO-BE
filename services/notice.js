@@ -83,6 +83,29 @@ const createNewCommentReplyNoticeMessage = async ({ sentUser, document, type }) 
     }
 };
 
+const createNewChatNoticeMessage = async ({ sentUser, document }) => {
+    try {
+        let text = EVENT.MESSAGE.CHAT;
+
+        const findBoard = await NoticeBoard.findOne({
+            userId: document.userId2,
+        });
+
+        const newMessage = new NoticeMessage({
+            noticeBoardId: findBoard.noticeBoardId,
+            noticeType: 'Chat',
+            whereEvent: 'chat',
+            sentUser: sentUser.userId,
+            noticeTitle: `${sentUser.nickname} ${text}`,
+        });
+
+        await newMessage.save();
+        return;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const deleteNotice = async ({ user, id }) => {
     try {
         await NoticeMessage.deleteOneNotice({
@@ -112,6 +135,7 @@ module.exports = {
     findAllNotice,
     createNewNoticeBoard,
     createNewCommentReplyNoticeMessage,
+    createNewChatNoticeMessage,
     deleteNotice,
     deleteAllNotice,
 };
