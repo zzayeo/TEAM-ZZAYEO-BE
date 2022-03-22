@@ -189,11 +189,6 @@ const checkChat = async ({ userId }) => {
     }
 };
 
-const getTargetchatroom = async ({ chatRoomId }) => {
-    const targetChatRoom = await ChatRoom.findOne({ _id: chatRoomId });
-    return targetChatRoom;
-};
-
 const getOutChatRoom = async ({ chatRoomId, userId }) => {
     const findChatRoom = await ChatRoom.findOne({ _id: chatRoomId });
     if (findChatRoom.outUser === '') {
@@ -221,6 +216,5 @@ module.exports = {
     getChatMessageByRoomNum,
     getChatRoomList,
     checkChat,
-    getTargetchatroom,
     getOutChatRoom,
 };
