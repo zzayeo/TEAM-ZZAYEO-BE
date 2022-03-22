@@ -1,4 +1,5 @@
 const chatService = require('../services/chat');
+const NoticeService = require('../services/notice');
 
 const roomNameCreator = (snsIdA, snsIdB) => {
     const roomName = [snsIdA, snsIdB];
@@ -7,20 +8,26 @@ const roomNameCreator = (snsIdA, snsIdB) => {
     return createdRoomName;
 };
 
-const getChatMessageByIds = async (req, res, next) => {
-    const { snsId } = res.locals.user;
+const getChatMessageByIds = async (req, res) => {
+    const { user } = res.locals;
     const { page } = req.query;
     const { toSnsId } = req.params; //상대방꺼 userId임
 
-    const roomName = await roomNameCreator(snsId, toSnsId);
+    const roomNum = await roomNumMaker(snsId, toSnsId);
     const getChat = await chatService.getChatMessageByRoomNum({
-        fromSnsId: snsId,
+        fromSnsId: user.snsId,
         toSnsId,
-        roomName,
+        roomNum,
         page,
         // chatCount,
     });
-    await chatService.findAndUpdateChatRoom({ snsId, toSnsId, roomName });
+    const checkFirst = await chatService.findAndUpdateChatRoom({
+        fromSnsId: user.snsId,
+        toSnsId,
+        roomNum,
+    });
+    if (checkFirst)
+        await NoticeService.createNewChatNoticeMessage({ sentUser: user, document: checkFirst });
     return res.status(200).json({ result: 'success', chatMessages: getChat });
 };
 
