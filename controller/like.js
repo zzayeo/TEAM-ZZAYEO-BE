@@ -1,8 +1,9 @@
 const LikeService = require('../services/like');
+const NoticeService = require('../services/notice');
 
 //좋아요 추가
 const addLike = async (req, res) => {
-    const { userId } = res.locals.user;
+    const { user } = res.locals.user;
     const { Id } = req.params;
     console.log(Id);
     let type = '';
@@ -14,7 +15,7 @@ const addLike = async (req, res) => {
     console.log(type);
 
     const findLike = await LikeService.findLikeByUserIdAndIdAndType({
-        userId,
+        userId: user.userId,
         Id,
         type,
     });
@@ -24,7 +25,10 @@ const addLike = async (req, res) => {
         return res.status(401).json({ result: 'fail', message: '이미 좋아요 추가했습니다.' });
     }
 
-    await LikeService.createLike({ userId, Id, type });
+    const createLike = await LikeService.createLike({ userId: user.userId, Id, type });
+    console.log(createLike);
+    await NoticeService.createNewLikeNoticeMessage({ sentUser: user, document: createLike, type });
+
     res.json({
         result: 'success',
         message: '성공',
