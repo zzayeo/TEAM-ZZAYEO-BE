@@ -1,19 +1,28 @@
+/* eslint-disable no-useless-catch */
 const Reply = require('../models/reply');
-
-//댓글에 답글 생성
-const createReply = async ({ userId, content, planId, commentId }) => {
-    const newReply = await Reply.create({
-        userId,
-        commentId,
-        content,
-        planId,
-    });
-    return;
-};
+const Comment = require('../models/comment');
 
 const getTargetReply = async ({ replyId }) => {
     const targetReply = await Reply.findOne({ _id: replyId });
     return targetReply;
+};
+
+//댓글에 답글 생성
+const createReply = async ({ userId, content, commentId }) => {
+    try {
+        const findComment = await Comment.findOne({ _id: commentId });
+
+        const newReply = new Reply({
+            userId,
+            commentId,
+            content,
+            planId: findComment.planId,
+        });
+        await newReply.save();
+        return newReply;
+    } catch (error) {
+        throw error;
+    }
 };
 
 //댓글에 답글 수정

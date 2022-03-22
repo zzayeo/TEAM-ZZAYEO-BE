@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 //스키마
 const Comment = require('../models/comment');
 
@@ -18,12 +19,14 @@ const getCommentLike = async (foundComment, user) => {
 
 const createComment = async ({ userId, content, planId }) => {
     try {
-        await Comment.create({
+        const newComment = new Comment({
             userId,
             content,
             planId,
         });
-        return;
+
+        await newComment.save();
+        return newComment;
     } catch (error) {
         throw error;
     }
@@ -58,5 +61,5 @@ module.exports = {
     createComment,
     getTargetComment,
     updateComment,
-    deleteComment
+    deleteComment,
 };
