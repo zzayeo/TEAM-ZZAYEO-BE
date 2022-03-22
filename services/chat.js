@@ -189,17 +189,17 @@ const checkChat = async ({ userId }) => {
     }
 };
 
-const getTargetchatroom = async ({ chatroomId }) => {
-    const targetchatroom = await ChatRoom.findOne({ _id: chatroomId });
-    return targetchatroom;
+const getTargetchatroom = async ({ chatRoomId }) => {
+    const targetChatRoom = await ChatRoom.findOne({ _id: chatRoomId });
+    return targetChatRoom;
 };
 
-const getOutChatRoom = async ({ chatroomId, userId }) => {
-    const findChatRoom = await ChatRoom.findOne({ _id: chatroomId });
+const getOutChatRoom = async ({ chatRoomId, userId }) => {
+    const findChatRoom = await ChatRoom.findOne({ _id: chatRoomId });
     if (findChatRoom.outUser === '') {
         findChatRoom.outUser = userId;
         await findChatRoom.save();
-        const findChatMessages = await ChatMessage.find({ chatroomId });
+        const findChatMessages = await ChatMessage.find({ chatRoomId });
         for (let message of findChatMessages) {
             if (message.outUser) {
                 await ChatMessage.deleteOne({ _id: message._id });
@@ -210,7 +210,7 @@ const getOutChatRoom = async ({ chatroomId, userId }) => {
         }
         return;
     } else {
-        await ChatRoom.deleteOne({ _id: chatroomId });
+        await ChatRoom.deleteOne({ _id: chatRoomId });
         return;
     }
 };
