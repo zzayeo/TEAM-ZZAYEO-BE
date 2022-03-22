@@ -10,6 +10,7 @@ const roomNameCreator = (snsIdA, snsIdB) => {
 
 const getChatMessageByIds = async (req, res) => {
     const { user } = res.locals;
+    const { snsId } = res.locals.user;
     const { page } = req.query;
     const { toSnsId } = req.params; //상대방꺼 userId임
 
@@ -46,15 +47,9 @@ const checkNewChat = async (req, res) => {
 // 채팅방 삭제
 const deletechatroom = async (req, res) => {
     const { userId } = res.locals.user;
-    const { chatroomId } = req.params;
+    const { chatRoomId } = req.params;
 
-    const targetchatroom = await chatService.getTargetchatroom({ chatroomId });
-    // if (targetchatroom.userId.toHexString() !== userId) {
-    //     return res
-    //         .status(200)
-    //         .json({ result: 'false', message: '본인의 채팅방만 삭제할수있습니다' });
-    // }
-    await chatService.getOutChatRoom({ chatroomId, userId });
+    await chatService.getOutChatRoom({ chatRoomId, userId });
     res.json({
         result: 'success',
         message: '성공',
