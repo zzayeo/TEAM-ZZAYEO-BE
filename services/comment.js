@@ -19,11 +19,12 @@ const getCommentLike = async (foundComment, user) => {
 
 const createComment = async ({ userId, content, planId }) => {
     try {
-        new Comment.create({
+        Comment.create({
             userId,
             content,
             planId,
         });
+        return;
     } catch (error) {
         throw error;
     }

@@ -7,7 +7,7 @@ const postReply = async (req, res, next) => {
     const { content } = req.body;
     const { commentId } = req.params;
 
-    const newReply = await ReplyService.createReply({
+    await ReplyService.createReply({
         userId: user.userId,
         content,
         commentId,
@@ -15,7 +15,7 @@ const postReply = async (req, res, next) => {
 
     await NoticeService.createNewCommentReplyNoticeMessage({
         sentUser: user,
-        document: newReply,
+        Id: commentId,
         type: 'reply',
     });
 
