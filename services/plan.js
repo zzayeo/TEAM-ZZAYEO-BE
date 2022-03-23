@@ -93,8 +93,6 @@ const findLikePlanByDate = async () => {
             planBookMarks: 0,
         });
 
-    console.log(thisMonthPlan);
-
     return thisMonthPlan;
 };
 
@@ -162,8 +160,6 @@ const findBookMarkPlanByDate = async () => {
             planLikes: 0,
             planBookMarks: 0,
         });
-
-    console.log(thisMonthPlan);
 
     return thisMonthPlan;
 };
@@ -350,7 +346,6 @@ const updatePlan = async ({ planId, title, startDate, endDate, destination, styl
     const findPlan = await Plan.findOne({ _id: planId });
     let beforeDays = calculateDays(findPlan.startDate, findPlan.endDate);
     let updateDays = calculateDays(startDate, endDate);
-    let diffDays = Math.abs(beforeDays - updateDays);
 
     if (beforeDays < updateDays) {
         for (let i = beforeDays + 2; i <= updateDays + 1; i++) {
@@ -461,7 +456,7 @@ const copyPlanByPlanId = async ({ planId, user }) => {
                 dayNumber: i,
             });
             for (let j = 0; j < findPlan.days[i - 1].places.length; j++) {
-                const newPlace = await Place.create({
+                await Place.create({
                     planId: findPlan.planId,
                     dayId: newDay._id,
                     placeName: findPlan.days[i - 1].places[j].placeName,
