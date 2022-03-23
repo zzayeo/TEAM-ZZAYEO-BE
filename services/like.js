@@ -24,7 +24,7 @@ const findLikeByUserIdAndIdAndType = async ({ userId, Id, type }) => {
 const createLike = async ({ userId, Id, type }) => {
     try {
         if (type === 'plan') {
-            const createLike = await Like.create({
+            await Like.create({
                 userId,
                 planId: Id,
             });
@@ -32,7 +32,7 @@ const createLike = async ({ userId, Id, type }) => {
         }
         if (type === 'comment') {
             const findComment = await Comment.findOne({ _id: Id });
-            const createLike = await Like.create({
+            await Like.create({
                 userId,
                 commentId: Id,
                 planId: findComment.planId,
@@ -41,12 +41,12 @@ const createLike = async ({ userId, Id, type }) => {
         }
         if (type === 'reply') {
             const findReply = await Reply.findOne({ _id: Id });
-            const createLike = await Like.create({
+            await Like.create({
                 userId,
                 replyId: Id,
                 planId: findReply.planId,
             });
-            return createLike;
+            return;
         }
     } catch (error) {
         throw error;

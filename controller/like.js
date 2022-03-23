@@ -25,9 +25,9 @@ const addLike = async (req, res) => {
         return res.status(401).json({ result: 'fail', message: '이미 좋아요 추가했습니다.' });
     }
 
-    const createLike = await LikeService.createLike({ userId: user.userId, Id, type });
-    console.log(createLike);
-    await NoticeService.createNewLikeNoticeMessage({ sentUser: user, document: createLike, type });
+    await LikeService.createLike({ userId: user.userId, Id, type });
+
+    await NoticeService.createNewLikeNoticeMessage({ sentUser: user, Id, type });
 
     res.json({
         result: 'success',
