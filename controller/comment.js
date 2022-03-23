@@ -17,7 +17,7 @@ const writeComment = async (req, res) => {
     const { content } = req.body;
     const { planId } = req.params;
 
-    const newComment = await CommentService.createComment({
+    await CommentService.createComment({
         userId: user.userId,
         content,
         planId,
@@ -25,7 +25,7 @@ const writeComment = async (req, res) => {
 
     await NoticeService.createNewCommentReplyNoticeMessage({
         sentUser: user,
-        document: newComment,
+        Id: planId,
         type: 'comment',
     });
 
