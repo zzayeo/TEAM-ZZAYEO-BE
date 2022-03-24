@@ -158,9 +158,20 @@ const copyPlan = async (req, res) => {
 
     const copyPlan = await planService.copyPlanByPlanId({ planId, user });
 
-    return res
-        .status(200)
-        .json({ result: 'success', message: '복사 완료 되었습니다.', planId: copyPlan.planId });
+    return res.status(200).json({
+        result: 'success',
+        message: '복사 완료 되었습니다.',
+        planId: copyPlan.planId,
+    });
+};
+
+const searchPlan = async (req, res) => {
+    const { user } = res.locals.user;
+    let { page, query, style, destination, sort } = req.query;
+
+    const Search = await planService.getSearch({ page, query, destination, style, user, sort });
+
+    return res.json(Search);
 };
 
 module.exports = {
@@ -175,4 +186,5 @@ module.exports = {
     copyPlan,
     getMostLikedPlans,
     getMostBookMarkedPlans,
+    searchPlan,
 };

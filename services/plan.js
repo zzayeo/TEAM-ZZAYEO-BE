@@ -169,13 +169,22 @@ const findAllPublicPlans = async ({ page, user, destination, style, sort }) => {
     destination === undefined
         ? (destination = DIRECTORY.PLAN.destination)
         : (destination = [destination]);
-    style === undefined ? (style = DIRECTORY.PLAN.style) : (style = [style]);
 
-    const numPlans = await Plan.count({
+    const findQuery = {
         destination: { $in: destination },
-        style: { $in: style },
         status: '공개',
-    });
+    };
+
+    if (style === undefined) {
+        style = DIRECTORY.PLAN.style;
+        findQuery['style'] = { $in: style };
+    } else {
+        style = [style];
+        findQuery['style'] = { $all: style };
+    }
+
+    const numPlans = await Plan.count(findQuery);
+
     const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5);
 
     if (sort === undefined) {
@@ -195,15 +204,7 @@ const findAllPublicPlans = async ({ page, user, destination, style, sort }) => {
         user === undefined ? (user = { _id: 0 }) : user;
 
         const findPlan = await Plan.aggregate()
-            .match({
-                destination: {
-                    $in: destination,
-                },
-                style: {
-                    $in: style,
-                },
-                status: '공개',
-            })
+            .match(findQuery)
             .lookup({
                 from: 'likes',
                 localField: '_id',
