@@ -131,17 +131,17 @@ const createNewLikeNoticeMessage = async ({ sentUser, Id, type }) => {
     }
 };
 
-const createNewCommentReplyNoticeMessage = async ({ sentUser, document, type }) => {
+const createNewCommentReplyNoticeMessage = async ({ sentUser, Id, type }) => {
     try {
         let text = '';
         let findBoardOwner = '';
         if (type === 'comment') {
             text = EVENT.COMMENT.PLAN;
-            findBoardOwner = await Plan.findOne({ _id: document.planId });
+            findBoardOwner = await Plan.findOne({ _id: Id });
         }
         if (type === 'reply') {
             text = EVENT.COMMENT.COMMENT;
-            findBoardOwner = await Comment.findOne({ _id: document.commentId });
+            findBoardOwner = await Comment.findOne({ _id: Id });
         }
 
         if (sentUser.userId === findBoardOwner.userId.toHexString()) {
@@ -157,7 +157,8 @@ const createNewCommentReplyNoticeMessage = async ({ sentUser, document, type }) 
             noticeType: 'CommentReply',
             whereEvent: type,
             sentUser: sentUser.userId,
-            planId: document.planId,
+            planId: findBoardOwner.planId,
+            commentId: findBoardOwner.commentId,
             noticeTitle: `${sentUser.nickname} ${text}`,
         });
 
@@ -219,6 +220,7 @@ const deleteAllNotice = async ({ user }) => {
 module.exports = {
     findAllNotice,
     createNewNoticeBoard,
+    createNewLikeNoticeMessage,
     createNewCommentReplyNoticeMessage,
     createNewChatNoticeMessage,
     deleteNotice,
