@@ -44,6 +44,7 @@ io.on('connection', (socket) => {
         try {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
             socket.leave(roomName);
+            socket.join(fromSnsId);
         } catch (error) {
             console.log(error);
         }
