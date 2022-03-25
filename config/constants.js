@@ -104,9 +104,10 @@ const ROUTE = {
     },
     NOTICE: {
         GET_MY: '/notice',
-        DELETE_NOTICE: '/notice/:noticeMessageId',
-        DELETE_ALL_NOTICE: '/notice',
-    },
+        DELETE : '/notice/:noticeMessageId',
+        DELETE_ALL : '/notice',
+        GET_NEW : '/notice/new'
+    }
 };
 
 module.exports = {
