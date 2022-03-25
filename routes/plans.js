@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
+
+// Controllers
 const planController = require('../controller/plan');
 
-//미들웨어
+// MiddleWares
 const authMiddleware = require('../middlewares/auth-middleware');
 const { upload } = require('../middlewares/upload');
 const imageUploder = upload.single('imageFile');
 
+// Constants
 const { ROUTE } = require('../config/constants');
 
 // 이번달 북마크 검색
@@ -27,7 +30,7 @@ router.post(ROUTE.PLAN.CHANGE_STATUS, authMiddleware, planController.changePlanS
 router.delete(ROUTE.PLAN.DELETE, authMiddleware, planController.deletePlan);
 // 썸네일 사진 추가하기
 router.post(ROUTE.PLAN.ADD_THUMBNAIL, authMiddleware, imageUploder, planController.addNewThumbnail);
-// 나의 여행 불러오기
+// 나의 여행불러오기
 router.get(ROUTE.PLAN.GET_MY, authMiddleware, planController.getMyPlans);
 // 여행 수정하기
 router.patch(ROUTE.PLAN.UPDATE, authMiddleware, planController.updatePlanInfo);
