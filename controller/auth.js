@@ -1,7 +1,30 @@
 const userService = require('../services/auth');
+const NoticeService = require('../services/notice')
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 const { JWT_SECRET_KEY } = process.env;
+const bcrypt = require("bcrypt")
+
+const checkDuplicateEmail = async (req, res, next) => {
+    try {
+        const email = req.body
+        const findExistEmail = await userService.getExistEmail({ email })
+        
+        if(findExistEmail) {
+            res.status(400).json({
+                result: 'fail',
+                message: '이메일이 중복되었습니다.',
+            });
+        }
+        return res.status(200).json({ 
+            result: 'success',
+            message: '사용하실 수 있는 이메일 입니다.',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 const updateUserInfo = async (req, res, next) => {
     try {
@@ -74,4 +97,4 @@ const withdrawalUser = async (req, res, next) => {
     }
 };
 
-module.exports = { kakaoCallback, getUserInfo, getMyInfo, updateUserInfo, withdrawalUser };
+module.exports = { kakaoCallback, getUserInfo, getMyInfo, updateUserInfo, withdrawalUser, checkDuplicateEmail };
