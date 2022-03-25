@@ -577,14 +577,16 @@ const addThumbnail = async ({ thumbnailImage, planId }) => {
 
 const copyPlanByPlanId = async ({ planId, user }) => {
     try {
-        const findPlan = await Plan.findOne({ _id: planId }).populate({
-            path: 'days',
-            populate: { path: 'places' },
-        });
+        const findPlan = await Plan.findOne({ _id: planId })
+            .populate('userId')
+            .populate({
+                path: 'days',
+                populate: { path: 'places' },
+            });
 
         const newPlan = new Plan({
             userId: user.userId,
-            title: `${findPlan.nickname}님으로 부터 복사된 여행`,
+            title: `${findPlan.userId.nickname}님으로 부터 복사된 여행`,
             nickname: user.nickname,
             startDate: findPlan.startDate,
             endDate: findPlan.endDate,

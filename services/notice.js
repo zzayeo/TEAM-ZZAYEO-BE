@@ -192,9 +192,9 @@ const createNewChatNoticeMessage = async ({ sentUser, document }) => {
     }
 };
 
-const deleteNotice = async ({ user, id }) => {
+const deleteNotice = async ({ id }) => {
     try {
-        await NoticeMessage.deleteOneNotice({
+        await NoticeMessage.deleteOne({
             _id: id,
         });
         return;
