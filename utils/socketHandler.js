@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const chatService = require('../services/chat');
 
 const io = require('../config/socket').getIo();
@@ -74,9 +75,17 @@ io.on('connection', (socket) => {
             });
 
             io.to(roomName).emit('chat', chatMessage);
-            io.to(toSnsId).emit('list', chatMessage);
+            io.to(toSnsId).emit('chatNotice', { newChat: true });
         } catch (error) {
             console.log(error);
+        }
+    });
+    // notice
+    socket.on('notice', async ({ fromSnsId, toSnsId, noticeType, whereEvent }) => {
+        try {
+            io.to(toSnsId).emit('noticePage', { newNotice: true });
+        } catch (error) {
+            throw error;
         }
     });
 });
