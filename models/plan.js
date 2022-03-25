@@ -12,6 +12,7 @@ const PlanSchema = new mongoose.Schema(
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
+            // foreignFields: '_id',
         },
         title: {
             type: String,
@@ -31,9 +32,6 @@ const PlanSchema = new mongoose.Schema(
         status: {
             type: String,
             default: '비공개',
-        },
-        nickname: {
-            type: String,
         },
         thumbnailImage: {
             type: String,
@@ -80,7 +78,8 @@ PlanSchema.virtual('likeCount', {
 });
 
 PlanSchema.statics.findLikeBookmark = async function (foundPlan, user) {
-    console.log(user);
+    // const findPaging = await this.find().sort('-createdAt').skip(5 * (page - 1)).limit(5).populate('userId likeCount bookmarkCount', 'snsId email nickname profile_img').exec();
+    // console.log(foundPlan)
     if (user === undefined) {
         for (let i = 0; i < foundPlan.length; i++) {
             foundPlan[i]._doc.isLike = false;
@@ -90,11 +89,16 @@ PlanSchema.statics.findLikeBookmark = async function (foundPlan, user) {
     }
 
     for (let i = 0; i < foundPlan.length; i++) {
-        const LikeUser = await Like.findOne({ userId: user.userId, planId: foundPlan[i].planId });
+        const LikeUser = await Like.findOne({
+            userId: user.userId,
+            planId: foundPlan[i].planId,
+        });
+        // console.log("likeUser :", LikeUser)
         const BookMarkUser = await Bookmark.findOne({
             userId: user.userId,
             planId: foundPlan[i].planId,
         });
+        // console.log("BookMarkUser :", BookMarkUser)
         LikeUser ? (foundPlan[i]._doc.isLike = true) : (foundPlan[i]._doc.isLike = false);
         BookMarkUser
             ? (foundPlan[i]._doc.isBookmark = true)
