@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-catch */
-const chatService = require('../services/chat');
+const ChatService = require('../services/chat');
+const NoticeService = require('../services/notice');
 
 const io = require('../config/socket').getIo();
 
@@ -15,8 +16,11 @@ io.on('connection', (socket) => {
     });
 
     //소켓 로그인
-    socket.on('login', ({ fromSnsId }) => {
+    socket.on('login', async ({ fromSnsId }) => {
+        console.log(fromSnsId, '로 로그인 되었습니다');
         socket.join(fromSnsId);
+        const checkNew = await NoticeService.checkNewNotice({ snsId: fromSnsId });
+        io.to(fromSnsId).emit('checkNewNotice', checkNew);
     });
 
     // roomNum Maker
@@ -31,7 +35,16 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', async ({ fromSnsId, toSnsId }) => {
         try {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
-            await chatService.findAndUpdateChatRoom({ fromSnsId, toSnsId, roomName });
+            const checkFirst = await ChatService.findAndUpdateChatRoom({
+                fromSnsId,
+                toSnsId,
+                roomName,
+            });
+            if (checkFirst)
+                await NoticeService.createNewChatNoticeMessage({
+                    sentUser: checkFirst.userId,
+                    document: checkFirst,
+                });
             socket.join(roomName);
             io.to(roomName).emit('join', toSnsId);
             socket.leave(fromSnsId);
@@ -46,6 +59,8 @@ io.on('connection', (socket) => {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
             socket.leave(roomName);
             socket.join(fromSnsId);
+            const checkNew = await NoticeService.checkNewNotice({ snsId: fromSnsId })
+            io.to(fromSnsId).emit('checkNewNotice', checkNew)
         } catch (error) {
             console.log(error);
         }
@@ -69,7 +84,7 @@ io.on('connection', (socket) => {
                 createdAt,
             };
 
-            await chatService.saveChatMessage({
+            await ChatService.saveChatMessage({
                 roomName,
                 ...chatMessage,
             });
