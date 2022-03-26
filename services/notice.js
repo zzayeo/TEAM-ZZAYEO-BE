@@ -4,6 +4,7 @@ const NoticeMessage = require('../models/noticemessage');
 const Plan = require('../models/plan');
 const Comment = require('../models/comment');
 const Reply = require('../models/reply');
+const User = require('../models/user');
 
 const { NOTICE_EVENT: EVENT } = require('../config/constants');
 
@@ -11,7 +12,9 @@ const findAllNotice = async ({ user }) => {
     try {
         const findBoard = await NoticeBoard.findOne({
             userId: user.userId,
-        }).populate({
+        })
+        .sort('-createdAt')
+        .populate({
             path: 'notices',
             populate: { path: 'sentUser', select: 'profile_img' },
         });
@@ -20,6 +23,23 @@ const findAllNotice = async ({ user }) => {
         }).updateMany({ checkNotice: 'true' });
 
         return findBoard.notices;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const checkNewNotice = async ({ snsId }) => {
+    try {
+        const findUser = await User.findOne({ snsId })
+        const findBoard = await NoticeBoard.findOne({
+            userId: findUser.userId,
+        }).populate({
+            path: 'notices',
+            populate: { path: 'sentUser', select: 'profile_img' },
+        });
+        const checkNew = findBoard.notices.filter((el) => el.checkNotice === false).length;
+
+        return checkNew ? false : true
     } catch (error) {
         throw error;
     }
@@ -226,4 +246,5 @@ module.exports = {
     createNewChatNoticeMessage,
     deleteNotice,
     deleteAllNotice,
+    checkNewNotice
 };
