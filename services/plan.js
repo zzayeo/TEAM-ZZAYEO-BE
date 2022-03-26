@@ -524,12 +524,39 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
     const plan = await Plan.findOne({ _id: planId })
         .populate({
             path: 'days',
-            populate: { path: 'places' },
+            populate: { path: 'places', sort: { time: 1 } },
         })
         .populate('userId likeCount bookmarkCount');
 
     const planLikeBookmark = await Plan.findLikeBookmark([plan], user);
 
+    planLikeBookmark[0].days.map((el) =>
+        el.places.sort((a, b) => {
+            const aAMPM = a.time.split(' ')[0];
+            const aHour = +a.time.split(' ')[1].split('시')[0];
+            const aMin = +a.time.split(' ')[2].split('분')[0];
+            const bAMPM = b.time.split(' ')[0];
+            const bHour = +b.time.split(' ')[1].split('시')[0];
+            const bMin = +b.time.split(' ')[2].split('분')[0];
+            let Atime = 0;
+            let Btime = 0;
+            if (aAMPM === '오후' && aHour !== 12) {
+                Atime = (12 + aHour) * 60 + aMin;
+            } else if (aAMPM === '오전') {
+                Atime = aHour * 60 + aMin;
+            }
+            if (bAMPM === '오후' && bHour !== 12) {
+                Btime = (12 + bHour) * 60 + bMin;
+            } else if (aAMPM === '오전') {
+                Btime = bHour * 60 + bMin;
+            }
+
+            if (Atime > Btime) return 1;
+            if (Atime < Btime) return -1;
+            if (Atime === Btime) return 0;
+        })
+    );
+    
     const findPlaces = await Place.find({ planId });
     let allImages = [];
     for (let place of findPlaces) {
