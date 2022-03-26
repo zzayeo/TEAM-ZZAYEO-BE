@@ -45,9 +45,9 @@ io.on('connection', (socket) => {
                     sentUser: checkFirst.userId,
                     document: checkFirst,
                 });
+            socket.leave(fromSnsId);
             socket.join(roomName);
             io.to(roomName).emit('join', toSnsId);
-            socket.leave(fromSnsId);
         } catch (error) {
             console.log(error);
         }
@@ -59,8 +59,8 @@ io.on('connection', (socket) => {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
             socket.leave(roomName);
             socket.join(fromSnsId);
-            const checkNew = await NoticeService.checkNewNotice({ snsId: fromSnsId })
-            io.to(fromSnsId).emit('checkNewNotice', checkNew)
+            const checkNew = await NoticeService.checkNewNotice({ snsId: fromSnsId });
+            io.to(fromSnsId).emit('checkNewNotice', checkNew);
         } catch (error) {
             console.log(error);
         }
