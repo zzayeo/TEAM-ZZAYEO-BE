@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-catch */
-const User = require('../models/user');
 const Plan = require('../models/plan');
 const Place = require('../models/place');
 const Day = require('../models/day');
@@ -32,10 +31,10 @@ const findLikePlanByDate = async () => {
     const thisMonthPlan = await Plan.aggregate()
         .match({
             status: '공개',
-            updatedAt: {
-                $gte: firstDayCalculator(new Date()),
-                $lt: nextMonthCalculator(new Date()),
-            },
+            // updatedAt: {
+            //     $gte: firstDayCalculator(new Date()),
+            //     $lt: nextMonthCalculator(new Date()),
+            // },
         })
         .lookup({
             from: 'likes',
@@ -100,10 +99,10 @@ const findBookMarkPlanByDate = async () => {
     const thisMonthPlan = await Plan.aggregate()
         .match({
             status: '공개',
-            updatedAt: {
-                $gte: firstDayCalculator(new Date()),
-                $lt: nextMonthCalculator(new Date()),
-            },
+            // updatedAt: {
+            //     $gte: firstDayCalculator(new Date()),
+            //     $lt: nextMonthCalculator(new Date()),
+            // },
         })
         .lookup({
             from: 'likes',
@@ -556,7 +555,7 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
             if (Atime === Btime) return 0;
         })
     );
-    
+
     const findPlaces = await Place.find({ planId });
     let allImages = [];
     for (let place of findPlaces) {
