@@ -71,8 +71,18 @@ const createUser = async ({ nickname, password, email}) => {
     }
 };
 
+const getExistEmail = async ({ email }) => {
+    try{
+        const targetEmail = await User.find({ email })
+        return targetEmail;
+    } catch (error) {  
+        throw err;
+    }
+};
+
 module.exports = {
     findUserInfoByUserId,
     updateUserInfo,
-    createUser
+    createUser,
+    getExistEmail
 };
