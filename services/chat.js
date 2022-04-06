@@ -49,7 +49,7 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
         const findUser = await User.findOne({ snsId: fromSnsId });
         const findUser2 = await User.findOne({ snsId: toSnsId });
 
-        const createChat = await ChatMessage.create({
+        const creatChat = await ChatMessage.create({
             fromUserId: findUser.userId,
             toUserId: findUser2.userId,
             chatText,
@@ -58,7 +58,7 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
             createdAt,
         });
 
-        findChatRoom.lastChat = createChat.chatMessageId;
+        findChatRoom.lastChat = creatChat.chatMessageId;
         if (findChatRoom.outUser !== '') findChatRoom.outUser = '';
         await findChatRoom.save();
         return;
@@ -82,14 +82,13 @@ const getChatMessageByRoomNum = async ({ fromSnsId, toSnsId, roomNum, page }) =>
             // throw customyourProfiledError(MESSAGE.NOT_USER, 400);
             throw new Error('잘못된 요청입니다.');
         }
-
         const findChatRoom = await ChatRoom.findOne({ roomNum });
-        if (findChatRoom.outUser === myProfile.userId) {
-            findChatRoom.outUser = '';
-            await findChatRoom.save();
-        }
 
         if (findChatRoom) {
+            if (findChatRoom.outUser === myProfile.userId) {
+                findChatRoom.outUser = '';
+                await findChatRoom.save();
+            }
             const findChatMessages = await ChatMessage.find({
                 $and: [
                     { chatRoomId: findChatRoom.chatRoomId },
@@ -120,6 +119,8 @@ const getChatMessageByRoomNum = async ({ fromSnsId, toSnsId, roomNum, page }) =>
     }
 };
 
+//나간사람 : 재정Id
+
 // 채팅방 리스트 페이지 들어갔을 때 리스트 불러오기 api
 const getChatRoomList = async ({ userId }) => {
     try {
@@ -142,7 +143,6 @@ const getChatRoomList = async ({ userId }) => {
         if (!findChatRoomList) {
             return;
         }
-
         // 채팅방 목록 불러온 사람이 무조건 userId 가 되게 변경
         for (let i = 0; i < findChatRoomList.length; i++) {
             const myUserInfo = findChatRoomList[i].userId;
@@ -157,6 +157,7 @@ const getChatRoomList = async ({ userId }) => {
             }
             findChatRoomList[i]._doc.notReadCount = notReadCount;
         }
+
         return findChatRoomList;
     } catch (error) {
         throw error;
@@ -185,7 +186,6 @@ const checkChat = async ({ userId }) => {
                     return (newChatMessage = true);
             }
         }
-
         return newChatMessage;
     } catch (error) {
         throw error;
@@ -199,7 +199,7 @@ const getOutChatRoom = async ({ chatRoomId, userId }) => {
         await findChatRoom.save();
         const findChatMessages = await ChatMessage.find({ chatRoomId });
         for (let message of findChatMessages) {
-            if (message.outUser) {
+            if (message.outUser !== '') {
                 await ChatMessage.deleteOne({ _id: message._id });
             } else {
                 message.outUser = userId;

@@ -3,7 +3,6 @@ const router = express.Router();
 // Library
 const passport = require('passport');
 
-
 // Controllers
 const authController = require('../controller/auth');
 

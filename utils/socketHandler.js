@@ -107,6 +107,7 @@ io.on('connection', (socket) => {
             const fromUser = await UserService.findUserBySnsId({ snsId: fromSnsId });
             const toUser = await UserService.findUserBySnsId({ snsId: toSnsId });
             if (toUser.subscription) {
+                console.log(fromUser);
                 let body = fromUser.nickname;
                 if (noticeType === 'Like') {
                     if (whereEvent === 'plan') body += EVENT.LIKE.PLAN;
@@ -135,7 +136,6 @@ io.on('connection', (socket) => {
                 });
 
                 console.log(payload);
-
                 webpush.sendNotification(toUser.subscription, payload, options);
             }
         } catch (error) {

@@ -5,10 +5,8 @@ const postplaces = async (req, res) => {
     const { dayId } = req.params;
     const { placeName, lat, lng, address, time, memoText } = req.body;
 
-    // let videoUrl = [];
     let imageUrl = [];
 
-    // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
     req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
     await PlacesService.createplaces({
@@ -30,10 +28,8 @@ const patchplaces = async (req, res) => {
     const { placeId } = req.params;
     const { placeName, lat, lng, address, time, memoText } = req.body;
 
-    // let videoUrl = [];
     let imageUrl = [];
 
-    // req.files.videoFile ? videoUrl = req.files.videoFile : videoUrl;
     req.files.imageFile ? (imageUrl = req.files.imageFile) : imageUrl;
 
     await PlacesService.updateplaces({

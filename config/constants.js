@@ -2,6 +2,10 @@ const MESSAGE = {
     NOT_CONNECT_SOCKET_IO: 'socket.io is not initalized',
 };
 
+const SERVER_CORS = {
+    origin: '*',
+};
+
 const SOCKET_CORS = {
     origin: '*',
     methods: ['GET', 'POST'],
@@ -62,7 +66,6 @@ const ROUTE = {
         UPDATE: '/plans/:planId/:commentId',
         DELETE: '/plans/:planId/:commentId',
     },
-
     REPLIES: {
         ADD: '/plans/comments/:commentId/reply',
         UPDATE: '/plans/comments/replies/:replyId',
@@ -117,6 +120,7 @@ const ROUTE = {
 };
 
 module.exports = {
+    SERVER_CORS,
     SOCKET_CORS,
     MESSAGE,
     ROUTE,

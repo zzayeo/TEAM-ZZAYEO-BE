@@ -31,10 +31,10 @@ const findLikePlanByDate = async () => {
     const thisMonthPlan = await Plan.aggregate()
         .match({
             status: '공개',
-            // updatedAt: {
-            //     $gte: firstDayCalculator(new Date()),
-            //     $lt: nextMonthCalculator(new Date()),
-            // },
+            updatedAt: {
+                $gte: firstDayCalculator(new Date()),
+                $lt: nextMonthCalculator(new Date()),
+            },
         })
         .lookup({
             from: 'likes',
@@ -91,7 +91,6 @@ const findLikePlanByDate = async () => {
             planLikes: 0,
             planBookMarks: 0,
         });
-
     return thisMonthPlan;
 };
 
@@ -159,7 +158,6 @@ const findBookMarkPlanByDate = async () => {
             planLikes: 0,
             planBookMarks: 0,
         });
-
     return thisMonthPlan;
 };
 
@@ -183,15 +181,10 @@ const findAllPublicPlans = async ({ page, user, destination, style, sort }) => {
     }
 
     const numPlans = await Plan.count(findQuery);
-
     const endPage = numPlans === 0 ? 1 : Math.ceil(numPlans / 5);
 
     if (sort === undefined) {
-        const findPage = await Plan.find({
-            destination: { $in: destination },
-            style: { $in: style },
-            status: '공개',
-        })
+        const findPage = await Plan.find(findQuery)
             .sort('-updatedAt')
             .skip(5 * (page - 1))
             .limit(5)
@@ -477,6 +470,7 @@ const createPlan = async ({ user, title, startDate, endDate, destination, style,
         style,
         withlist,
     });
+
     await newPlan.save();
 
     for (let i = 1; i <= calculateDays(startDate, endDate) + 1; i++) {
@@ -492,6 +486,7 @@ const updatePlan = async ({ planId, title, startDate, endDate, destination, styl
     const findPlan = await Plan.findOne({ _id: planId });
     let beforeDays = calculateDays(findPlan.startDate, findPlan.endDate);
     let updateDays = calculateDays(startDate, endDate);
+    // let diffDays = Math.abs(beforeDays - updateDays);
 
     if (beforeDays < updateDays) {
         for (let i = beforeDays + 2; i <= updateDays + 1; i++) {
@@ -569,7 +564,7 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
     return planLikeBookmark[0];
 };
 
-const changePlanByPlanId = async (findPlan, status) => {
+const changePlanByPlanId = async ({ findPlan, status }) => {
     findPlan.status = status;
 
     await findPlan.save();
@@ -658,7 +653,6 @@ module.exports = {
     deletePlanByPlanId,
     findOnePlanByPlanId,
     findAllPlanByUserId,
-    calculateDays,
     addThumbnail,
     updatePlan,
     copyPlanByPlanId,

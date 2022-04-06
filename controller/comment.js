@@ -59,7 +59,7 @@ const deleteComment = async (req, res) => {
 
     const targetComment = await CommentService.getTargetComment({ commentId });
     if (targetComment.userId.toHexString() !== userId) {
-        return res.json({ result: 'false', message: '본인의 댓글만 삭제할수있습니다' });
+        return res.json({ result: 'false', message: '본인의 댓글만 삭제할 수 있습니다' });
     }
     await CommentService.deleteComment({ commentId });
     res.json({

@@ -58,8 +58,8 @@ const deleteComment = async ({ commentId }) => {
 module.exports = {
     getCommentByPlanId,
     getCommentLike,
-    createComment,
     getTargetComment,
+    createComment,
     updateComment,
     deleteComment,
 };

@@ -1,4 +1,5 @@
 /* eslint-disable no-useless-catch */
+/* eslint-disable no-useless-catch */
 //스키마
 const Bookmark = require('../models/bookmark');
 const Plan = require('../models/plan');
@@ -16,6 +17,7 @@ const getBookmarkByUserId = async ({ user }) => {
 
     return getBookmarks;
 };
+
 //userId와 planId로 DB에 있는지 확인하기
 const findBookmarkByUserIdAndPlanId = async ({ userId, planId }) => {
     const findBookmark = await Bookmark.findOne({ userId, planId });

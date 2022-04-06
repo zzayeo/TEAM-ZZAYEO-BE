@@ -26,6 +26,20 @@ const checkDuplicateEmail = async (req, res, next) => {
     }
 };
 
+// const checkDuplicateNickName = async (req, res, next) => {
+//     try {
+//         const nickname = req.body
+//         const findNickName = await userService.getExistNickName({ nickname })
+//         if(findNickName) {
+//             return res.status(400).json({ result:"fali", message: "닉네임이 중복되었습니다"})
+//         }
+
+//         return res.status(200).json({ result: "success", message: "사용할 수 있는 닉네임입니다."})
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 const signUpUser = async (req, res, next) => {
     try {
         const { nickname, password, email } = req.body;
@@ -75,7 +89,10 @@ const updateUserInfo = async (req, res, next) => {
             nickname,
             profile_img,
         });
-        res.status(200).json({ result: 'success', message: '업데이트 완료되었습니다.' });
+        res.status(200).json({
+            result: 'success',
+            message: '업데이트 완료되었습니다.',
+        });
     } catch (error) {
         next(error);
     }
@@ -152,8 +169,8 @@ const setUserSubscribe = async (req, res, next) => {
 
 module.exports = {
     kakaoCallback,
-    getUserInfo,
     getMyInfo,
+    getUserInfo,
     updateUserInfo,
     withdrawalUser,
     checkDuplicateEmail,

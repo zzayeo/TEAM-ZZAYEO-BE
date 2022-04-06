@@ -12,13 +12,11 @@ const findAllNotice = async ({ user }) => {
     try {
         const findBoard = await NoticeBoard.findOne({
             userId: user.userId,
-        })
-            .sort('-createdAt')
-            .populate({
-                path: 'notices',
-                options: { sort: { createdAt: -1 } },
-                populate: { path: 'sentUser', select: 'profile_img' },
-            });
+        }).populate({
+            path: 'notices',
+            options: { sort: { createdAt: -1 } },
+            populate: { path: 'sentUser', select: 'profile_img' },
+        });
         await NoticeMessage.where({
             noticeBoardId: findBoard.noticeBoardId,
         }).updateMany({ checkNotice: 'true' });
@@ -240,11 +238,11 @@ const deleteAllNotice = async ({ user }) => {
 };
 
 module.exports = {
-    findAllNotice,
     createNewNoticeBoard,
     createNewLikeNoticeMessage,
     createNewCommentReplyNoticeMessage,
     createNewChatNoticeMessage,
+    findAllNotice,
     deleteNotice,
     deleteAllNotice,
     checkNewNotice,

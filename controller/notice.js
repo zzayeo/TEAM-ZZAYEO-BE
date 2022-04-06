@@ -44,13 +44,17 @@ const deleteAllNotice = async (req, res) => {
 const getNewNotice = async (req, res) => {
     const { user } = res.locals;
 
-    const findNotices = await NoticeService.checkNewNotice({ user });
+    let checkNew = false;
 
+    const findNotices = await NoticeService.checkNewNotice({ user });
     const falseNotices = findNotices.filter((el) => el.checkNotice === false);
+
+    if (falseNotices) checkNew = true;
 
     res.json({
         result: 'success',
         message: '조회 성공하였습니다.',
+        checkNew,
     });
 };
 

@@ -12,12 +12,13 @@ const createReply = async ({ userId, content, commentId }) => {
     try {
         const findComment = await Comment.findOne({ _id: commentId });
 
-        Reply.create({
+        await Reply.create({
             userId,
             commentId,
             content,
             planId: findComment.planId,
         });
+
         return;
     } catch (error) {
         throw error;
@@ -26,14 +27,22 @@ const createReply = async ({ userId, content, commentId }) => {
 
 //댓글에 답글 수정
 const updateReply = async ({ content, replyId }) => {
-    await Reply.updateOne({ _id: replyId }, { $set: { content } });
-    return;
+    try {
+        await Reply.updateOne({ _id: replyId }, { $set: { content } });
+        return;
+    } catch (error) {
+        throw error;
+    }
 };
 
 //댓글에 답글 삭제
 const deleteReply = async ({ replyId }) => {
-    await Reply.deleteOne({ _id: replyId });
-    return;
+    try {
+        await Reply.deleteOne({ _id: replyId });
+        return;
+    } catch (error) {
+        throw error;
+    }
 };
 
 module.exports = {

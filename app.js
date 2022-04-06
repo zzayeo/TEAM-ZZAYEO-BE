@@ -5,6 +5,8 @@ const app = express();
 const routes = require('./routes/index.js');
 const passportConfig = require('./passport');
 
+const { SERVER_CORS } = require('./config/constants');
+
 app.use((req, res, next) => {
     console.log(
         'Request URL:',
@@ -16,12 +18,7 @@ app.use((req, res, next) => {
     next();
 });
 
-const corsOptions = {
-    origin: '*',
-    // credentials: true
-};
-
-app.use(cors(corsOptions));
+app.use(cors(SERVER_CORS));
 passportConfig(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false })); // API 요청에서 받은 body 값을 파싱(해석)하는 역할을 수행하는 것이 bodyParser

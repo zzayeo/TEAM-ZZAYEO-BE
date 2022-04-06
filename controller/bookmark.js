@@ -19,7 +19,7 @@ const addBookmark = async (req, res) => {
         planId,
     });
 
-    if (!findBookmark) {
+    if (findBookmark) {
         return res.status(401).json({ result: 'fail', message: '이미 북마크 추가했습니다.' });
     }
 
