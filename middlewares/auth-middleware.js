@@ -5,7 +5,7 @@ const { JWT_SECRET_KEY } = process.env;
 module.exports = (req, res, next) => {
     const { authorization } = req.headers;
     const [authType, authToken] = (authorization || '').split(' ');
-    // console.log(req.url, req.method, authorization, 'Token',authToken,'Type', authType);
+
     if (req.method === 'GET' && (!authToken || authType !== 'Bearer')) {
         next();
         return;
