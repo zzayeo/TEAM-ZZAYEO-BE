@@ -137,9 +137,9 @@ const withdrawalUser = async (req, res, next) => {
 const setUserSubscribe = async (req, res, next) => {
     try {
         const { user } = res.locals;
-        const { subscription } = req.body.subscribe;
+        const { subscribe } = req.body;
 
-        await userService.updateUserSubscribe({ user, subscription });
+        await userService.updateUserSubscribe({ user, subscribe });
 
         res.status(200).json({
             result: 'success',

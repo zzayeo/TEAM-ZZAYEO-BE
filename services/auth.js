@@ -86,10 +86,10 @@ const getExistEmail = async ({ email }) => {
     }
 };
 
-const updateUserSubscribe = async ({ user, subscription }) => {
+const updateUserSubscribe = async ({ user, subscribe }) => {
     try {
         const findUser = await User.findOne({ _id: user.userId });
-        findUser.subscription = subscription;
+        findUser.subscription = subscribe;
         await findUser.save();
     } catch (error) {
         throw error;
