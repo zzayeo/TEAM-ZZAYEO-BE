@@ -16,7 +16,7 @@ router.get(ROUTE.COMMENT.FIND, authMiddleware, CommentController.findComment);
 router.post(ROUTE.COMMENT.WRITE, authMiddleware, CommentController.writeComment);
 // 여행 댓글 수정
 router.patch(ROUTE.COMMENT.UPDATE, authMiddleware, CommentController.changeComment);
-// 여행 댓글 삭제    
+// 여행 댓글 삭제
 router.delete(ROUTE.COMMENT.DELETE, authMiddleware, CommentController.deleteComment);
 
 module.exports = router;

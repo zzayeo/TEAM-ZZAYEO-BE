@@ -7,7 +7,7 @@ const placesController = require('../controller/places');
 // MiddleWares
 const authMiddleware = require('../middlewares/auth-middleware');
 const { upload } = require('../middlewares/upload');
-const imageUploder = upload.fields([{ name: 'imageFile', maxCount: 10 }])
+const imageUploder = upload.fields([{ name: 'imageFile', maxCount: 10 }]);
 
 // Constants
 const { ROUTE } = require('../config/constants');
