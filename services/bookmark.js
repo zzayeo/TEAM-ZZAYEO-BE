@@ -21,10 +21,6 @@ const getBookmarkByUserId = async ({ user }) => {
 //userId와 planId로 DB에 있는지 확인하기
 const findBookmarkByUserIdAndPlanId = async ({ userId, planId }) => {
     const findBookmark = await Bookmark.findOne({ userId, planId });
-
-    if (findBookmark !== null) {
-        return;
-    }
     return findBookmark;
 };
 

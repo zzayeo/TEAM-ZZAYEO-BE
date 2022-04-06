@@ -15,6 +15,7 @@ const getChatMessageByIds = async (req, res) => {
     const { toSnsId } = req.params; //상대방꺼 userId임
 
     const roomNum = await roomNameCreator(snsId, toSnsId);
+    console.log(roomNum);
     const getChat = await ChatService.getChatMessageByRoomNum({
         fromSnsId: user.snsId,
         toSnsId,

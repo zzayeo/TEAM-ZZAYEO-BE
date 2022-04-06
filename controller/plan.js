@@ -117,7 +117,8 @@ const getMyPlans = async (req, res) => {
 const addNewThumbnail = async (req, res) => {
     const { userId } = res.locals.user;
     const { planId } = req.params;
-    const { location } = req.file;
+    let location = '';
+    if (req.file) location = req.file.location;
 
     const findPlan = await planService.findOnePlanByPlanId({ planId });
 

@@ -564,7 +564,7 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
     return planLikeBookmark[0];
 };
 
-const changePlanByPlanId = async ({ findPlan, status }) => {
+const changePlanByPlanId = async (findPlan, status) => {
     findPlan.status = status;
 
     await findPlan.save();
