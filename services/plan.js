@@ -569,10 +569,10 @@ const findOnePlanByPlanIdisLikeBookMark = async ({ user, planId }) => {
     return planLikeBookmark[0];
 };
 
-const changePlanByPlanId = async ({ targetPlan, status }) => {
-    targetPlan.status = status;
+const changePlanByPlanId = async (findPlan, status) => {
+    findPlan.status = status;
 
-    await targetPlan.save();
+    await findPlan.save();
     return;
 };
 
