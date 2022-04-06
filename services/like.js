@@ -28,7 +28,7 @@ const createLike = async ({ userId, Id, type }) => {
                 userId,
                 planId: Id,
             });
-            return createLike;
+            return;
         }
         if (type === 'comment') {
             const findComment = await Comment.findOne({ _id: Id });
@@ -37,7 +37,7 @@ const createLike = async ({ userId, Id, type }) => {
                 commentId: Id,
                 planId: findComment.planId,
             });
-            return createLike;
+            return;
         }
         if (type === 'reply') {
             const findReply = await Reply.findOne({ _id: Id });

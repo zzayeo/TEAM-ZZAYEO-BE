@@ -3,16 +3,14 @@ const NoticeService = require('../services/notice');
 
 //좋아요 추가
 const addLike = async (req, res) => {
-    const { user } = res.locals.user;
+    const { user } = res.locals;
     const { Id } = req.params;
-    console.log(Id);
+
     let type = '';
     let num = req.originalUrl.split('/').length;
     if (num === 5) type = 'plan';
     if (num === 6) type = 'comment';
     if (num === 7) type = 'reply';
-
-    console.log(type);
 
     const findLike = await LikeService.findLikeByUserIdAndIdAndType({
         userId: user.userId,
