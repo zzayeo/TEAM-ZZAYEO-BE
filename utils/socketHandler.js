@@ -39,11 +39,11 @@ io.on('connection', (socket) => {
     // socket room join
     socket.on('joinRoom', async ({ fromSnsId, toSnsId }) => {
         try {
-            const roomName = await roomNameCreator(fromSnsId, toSnsId);
+            const roomNum = await roomNameCreator(fromSnsId, toSnsId);
             const checkFirst = await ChatService.findAndUpdateChatRoom({
                 fromSnsId,
                 toSnsId,
-                roomName,
+                roomNum,
             });
             if (checkFirst)
                 await NoticeService.createNewChatNoticeMessage({
@@ -51,8 +51,8 @@ io.on('connection', (socket) => {
                     document: checkFirst,
                 });
             socket.leave(fromSnsId);
-            socket.join(roomName);
-            io.to(roomName).emit('join', toSnsId);
+            socket.join(roomNum);
+            io.to(roomNum).emit('join', toSnsId);
         } catch (error) {
             console.log(error);
         }
@@ -106,7 +106,7 @@ io.on('connection', (socket) => {
             io.to(toSnsId).emit('noticePage', { newNotice: true });
             const fromUser = await UserService.findUserBySnsId({ snsId: fromSnsId });
             const toUser = await UserService.findUserBySnsId({ snsId: toSnsId });
-            if (toUser.subscription) {
+            if (toUser.subscription && fromSnsId !== toSnsId) {
                 console.log(fromUser);
                 let body = fromUser.nickname;
                 if (noticeType === 'Like') {
