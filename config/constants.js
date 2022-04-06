@@ -8,8 +8,9 @@ const SOCKET_CORS = {
 };
 
 const STATIC_IMAGE = {
-    PROFILE_IMAGE : "https://triplan-project.s3.ap-northeast-2.amazonaws.com/images/1648708819064cb4t4ef0l1emnuk8.jpeg"
-}
+    PROFILE_IMAGE:
+        'https://triplan-project.s3.ap-northeast-2.amazonaws.com/images/1648708819064cb4t4ef0l1emnuk8.jpeg',
+};
 
 const DIRECTORY = {
     PLAN: {
@@ -86,13 +87,14 @@ const ROUTE = {
     AUTH: {
         KAKAO: '/auth/kakao',
         KAKAO_CALLBACK: '/auth/kakao/callback',
-        GET_MY_INFOMATION: '/users/auth/me',
-        GET_USERS_INFOMATION: '/users/:userId',
-        UPDATE_MY_INFOMATION: '/users/auth/me',
+        GET_MY_INFO: '/users/auth/me',
+        GET_USERS_INFO: '/users/:userId',
+        UPDATE_MY_INFO: '/users/auth/me',
         WITHDRAW: '/users/auth/me',
-        CHECK_EMAIL : '/users/email',
-        SIGN_UP : '/users',
-        SIGN_IN : '/users/auth'
+        CHECK_EMAIL: '/users/email',
+        SIGN_UP: '/users',
+        SIGN_IN: '/users/auth',
+        SUBS: '/users/subscribe',
     },
     PLACES: {
         ADD: '/plans/days/:dayId',
@@ -108,10 +110,10 @@ const ROUTE = {
     },
     NOTICE: {
         GET_MY: '/notice',
-        DELETE : '/notice/:noticeMessageId',
-        DELETE_ALL : '/notice',
-        GET_NEW : '/notice/new'
-    }
+        DELETE: '/notice/:noticeMessageId',
+        DELETE_ALL: '/notice',
+        GET_NEW: '/notice/new',
+    },
 };
 
 module.exports = {
@@ -120,5 +122,5 @@ module.exports = {
     ROUTE,
     DIRECTORY,
     NOTICE_EVENT,
-    STATIC_IMAGE
+    STATIC_IMAGE,
 };

@@ -18,7 +18,10 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-    }
+    },
+    subscription: {
+        type: Object,
+    },
 });
 
 UserSchema.virtual('userId').get(function () {

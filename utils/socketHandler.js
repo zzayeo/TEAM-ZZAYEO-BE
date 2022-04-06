@@ -1,8 +1,13 @@
 /* eslint-disable no-useless-catch */
 const ChatService = require('../services/chat');
 const NoticeService = require('../services/notice');
+const UserService = require('../services/auth');
+const webpush = require('web-push');
 
 const io = require('../config/socket').getIo();
+
+const { publicKey, privateKey } = process.env;
+const { NOTICE_EVENT: EVENT } = require('../config/constants');
 
 io.on('connection', (socket) => {
     console.log(`User : ${socket.id}`);
@@ -99,6 +104,38 @@ io.on('connection', (socket) => {
     socket.on('notice', async ({ fromSnsId, toSnsId, noticeType, whereEvent }) => {
         try {
             io.to(toSnsId).emit('noticePage', { newNotice: true });
+            const fromUser = await UserService.findUserBySnsId({ snsId: fromSnsId });
+            const toUser = await UserService.findUserBySnsId({ snsId: toSnsId });
+            if (toUser.subscription) {
+                let body = fromUser.nickname;
+                if (noticeType === 'Like') {
+                    if (whereEvent === 'plan') body += EVENT.LIKE.PLAN;
+                    if (whereEvent === 'comment') body += EVENT.LIKE.COMMENT;
+                    if (whereEvent === 'reply') body += EVENT.LIKE.REPLY;
+                }
+                if (noticeType === 'CommentReply') {
+                    if (whereEvent === 'comment') body += EVENT.COMMENT.PLAN;
+                    if (whereEvent === 'reply') body += EVENT.LIKE.COMMENT;
+                }
+                if (noticeType === 'Chat') {
+                    if (whereEvent === 'chat') body += EVENT.MESSAGE.CHAT;
+                }
+                const options = {
+                    TTL: 24 * 60 * 60,
+                    vapidDetails: {
+                        subject: 'https://stgon.shop',
+                        publicKey,
+                        privateKey,
+                    },
+                };
+
+                const payload = JSON.stringify({
+                    title: '짜여',
+                    body,
+                });
+
+                webpush.sendNotification(toUser.subscription, payload, options);
+            }
         } catch (error) {
             throw error;
         }
