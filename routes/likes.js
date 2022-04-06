@@ -17,7 +17,7 @@ router.delete(ROUTE.LIKE.LIKEPLAN, authMiddleware, likeController.cancelLike);
 // 여행 댓글 좋아요
 router.post(ROUTE.LIKE.LIKECOMMENT, authMiddleware, likeController.addLike);
 // 여행 댓글 좋아요 취소
-router.delete(ROUTE.LIKE.LIKECOMMENT,authMiddleware,likeController.cancelLike);
+router.delete(ROUTE.LIKE.LIKECOMMENT, authMiddleware, likeController.cancelLike);
 // 답글 좋아요
 router.post(ROUTE.LIKE.LIKEREPLY, authMiddleware, likeController.addLike);
 // 답글 좋아요 취소

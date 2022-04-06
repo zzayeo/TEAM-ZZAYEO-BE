@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const Place = require('../models/place');
 const Day = require('../models/day');
 const Plan = require('../models/reply');

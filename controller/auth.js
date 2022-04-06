@@ -39,29 +39,29 @@ const signUpUser = async (req, res, next) => {
 
 const signInUser = async (req, res, next) => {
     try {
-        const { email, password } = req.body
-        const findExistEmail = await userService.getExistEmail({ email })
-        const user = await User.findOne({ email })
+        const { email, password } = req.body;
+        const findExistEmail = await userService.getExistEmail({ email });
+        const user = await User.findOne({ email });
 
-        if(!findExistEmail) {
+        if (!findExistEmail) {
             return res.status(400).json({
                 result: 'fail',
-                message: '존재하지 않는 이메일입니다.'
-            })
+                message: '존재하지 않는 이메일입니다.',
+            });
         } else {
-            const correctPassword = await bcrypt.compareSync(password, user.password)
+            const correctPassword = await bcrypt.compareSync(password, user.password);
             if (correctPassword) {
-                const token = jwt.sign({snsId: user.snsId }, JWT_SECRET_KEY);
+                const token = jwt.sign({ snsId: user.snsId }, JWT_SECRET_KEY);
 
-            res.status(200).send({ token, userId: user.email, snsId: user.snsId  })
+                res.status(200).send({ token, userId: user.email, snsId: user.snsId });
             } else {
-                res.status(400).send({errorMessage: '비밀번호가 다릅니다.' })
+                res.status(400).send({ errorMessage: '비밀번호가 다릅니다.' });
             }
         }
-    } catch (error) {   
+    } catch (error) {
         next(error);
     }
-}
+};
 
 const updateUserInfo = async (req, res, next) => {
     try {
@@ -134,6 +134,22 @@ const withdrawalUser = async (req, res, next) => {
     }
 };
 
+const setUserSubscribe = async (req, res, next) => {
+    try {
+        const { user } = res.locals;
+        const { subscription } = req.body.subscribe;
+
+        await userService.updateUserSubscribe({ user, subscription });
+
+        res.status(200).json({
+            result: 'success',
+            message: '등록 완료',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     kakaoCallback,
     getUserInfo,
@@ -142,5 +158,6 @@ module.exports = {
     withdrawalUser,
     checkDuplicateEmail,
     signUpUser,
-    signInUser
+    signInUser,
+    setUserSubscribe,
 };

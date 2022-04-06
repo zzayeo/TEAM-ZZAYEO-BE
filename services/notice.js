@@ -13,11 +13,12 @@ const findAllNotice = async ({ user }) => {
         const findBoard = await NoticeBoard.findOne({
             userId: user.userId,
         })
-        .sort('-createdAt')
-        .populate({
-            path: 'notices', options: {sort: { 'createdAt' : -1}},
-            populate: { path: 'sentUser', select: 'profile_img' },
-        });
+            .sort('-createdAt')
+            .populate({
+                path: 'notices',
+                options: { sort: { createdAt: -1 } },
+                populate: { path: 'sentUser', select: 'profile_img' },
+            });
         await NoticeMessage.where({
             noticeBoardId: findBoard.noticeBoardId,
         }).updateMany({ checkNotice: 'true' });
@@ -30,7 +31,7 @@ const findAllNotice = async ({ user }) => {
 
 const checkNewNotice = async ({ snsId }) => {
     try {
-        const findUser = await User.findOne({ snsId })
+        const findUser = await User.findOne({ snsId });
         const findBoard = await NoticeBoard.findOne({
             userId: findUser.userId,
         }).populate({
@@ -39,7 +40,7 @@ const checkNewNotice = async ({ snsId }) => {
         });
         const checkNew = findBoard.notices.filter((el) => el.checkNotice === false).length;
 
-        return checkNew ? false : true
+        return checkNew ? false : true;
     } catch (error) {
         throw error;
     }
@@ -246,5 +247,5 @@ module.exports = {
     createNewChatNoticeMessage,
     deleteNotice,
     deleteAllNotice,
-    checkNewNotice
+    checkNewNotice,
 };

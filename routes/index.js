@@ -10,10 +10,10 @@ const AuthRouter = require('./auth');
 const bookmarksRouter = require('./bookmarks');
 const repliesRouter = require('./replies');
 const chatsRouter = require('./chats');
-const noticesRouter = require('./notices')
+const noticesRouter = require('./notices');
 
 // Constatns
-const { ROUTE } = require("../config/constants");
+const { ROUTE } = require('../config/constants');
 
 router.use(ROUTE.INDEX, placesRouter);
 router.use(ROUTE.INDEX, likesRouter);
@@ -23,7 +23,6 @@ router.use(ROUTE.INDEX, repliesRouter);
 router.use(ROUTE.INDEX, chatsRouter);
 router.use(ROUTE.INDEX, commentsRouter);
 router.use(ROUTE.INDEX, plansRouter);
-router.use(ROUTE.INDEX, noticesRouter)
-
+router.use(ROUTE.INDEX, noticesRouter);
 
 module.exports = router;
