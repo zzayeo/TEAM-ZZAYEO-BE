@@ -134,6 +134,8 @@ io.on('connection', (socket) => {
                     body,
                 });
 
+                console.log(payload);
+
                 webpush.sendNotification(toUser.subscription, payload, options);
             }
         } catch (error) {
