@@ -80,7 +80,6 @@ const getChatMessageByRoomNum = async ({ fromSnsId, toSnsId, roomNum, page }) =>
         const yourProfile = await User.findOne({ snsId: toSnsId }); // 유저 정보 2
 
         if (!myProfile || !yourProfile) {
-            // throw customyourProfiledError(MESSAGE.NOT_USER, 400);
             throw new Error('잘못된 요청입니다.');
         }
         const findChatRoom = await ChatRoom.findOne({ roomNum });

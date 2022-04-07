@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ChatRoomSchema = new mongoose.Schema(
     {
-        roomNumber: {
+        roomNum: {
             type: String,
         },
         userId: {
