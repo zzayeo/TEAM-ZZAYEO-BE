@@ -10,7 +10,6 @@ const { publicKey, privateKey } = process.env;
 const { NOTICE_EVENT: EVENT } = require('../config/constants');
 
 io.on('connection', (socket) => {
-    console.log(`User : ${socket.id}`);
     socket.on('disconnect', () => {
         clearInterval(socket.interval);
     });
@@ -50,9 +49,9 @@ io.on('connection', (socket) => {
                     sentUser: checkFirst.userId,
                     document: checkFirst,
                 });
-            socket.leave(fromSnsId);
-            socket.join(roomNum);
             io.to(roomNum).emit('join', toSnsId);
+            socket.join(roomNum);
+            socket.leave(fromSnsId);
         } catch (error) {
             console.log(error);
         }
@@ -62,8 +61,8 @@ io.on('connection', (socket) => {
     socket.on('leaveRoom', async ({ fromSnsId, toSnsId }) => {
         try {
             const roomName = await roomNameCreator(fromSnsId, toSnsId);
-            socket.leave(roomName);
             socket.join(fromSnsId);
+            socket.leave(roomName);
             const checkNew = await NoticeService.checkNewNotice({ snsId: fromSnsId });
             io.to(fromSnsId).emit('checkNewNotice', checkNew);
         } catch (error) {
@@ -90,7 +89,7 @@ io.on('connection', (socket) => {
             };
 
             await ChatService.saveChatMessage({
-                roomName,
+                roomNum: roomName,
                 ...chatMessage,
             });
 
@@ -107,7 +106,6 @@ io.on('connection', (socket) => {
             const fromUser = await UserService.findUserBySnsId({ snsId: fromSnsId });
             const toUser = await UserService.findUserBySnsId({ snsId: toSnsId });
             if (toUser.subscription && fromSnsId !== toSnsId) {
-                console.log(fromUser);
                 let body = fromUser.nickname;
                 if (noticeType === 'Like') {
                     if (whereEvent === 'plan') body += EVENT.LIKE.PLAN;

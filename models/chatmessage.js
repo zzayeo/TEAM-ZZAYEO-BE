@@ -24,6 +24,7 @@ const ChatMessageSchema = new mongoose.Schema({
     },
     outUser: {
         type: String,
+        default: '',
     },
 });
 

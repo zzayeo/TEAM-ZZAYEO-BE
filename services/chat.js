@@ -5,13 +5,12 @@ const User = require('../models/user');
 
 const findAndUpdateChatRoom = async ({ fromSnsId, toSnsId, roomNum }) => {
     try {
-        console.log(fromSnsId, toSnsId, roomNum);
         if (!fromSnsId || !toSnsId || !roomNum) {
-            //   throw customizedError(MESSAGE.WRONG_REQ, 400);
             throw new Error('잘못된 요청입니다.');
         }
 
         const findChatRoom = await ChatRoom.findOne({ roomNum });
+
         const findUser = await User.findOne({ snsId: fromSnsId });
         const findUser2 = await User.findOne({ snsId: toSnsId });
 
@@ -43,7 +42,6 @@ const saveChatMessage = async ({ toSnsId, fromSnsId, chatText, checkChat, roomNu
     try {
         const findChatRoom = await ChatRoom.findOne({ roomNum });
         if (!findChatRoom) {
-            //  throw customizedError(MESSAGE.ISNOT_CHATROOM, 400);
             throw new Error('잘못된 요청입니다.');
         }
 
@@ -193,13 +191,15 @@ const checkChat = async ({ userId }) => {
 };
 
 const getOutChatRoom = async ({ chatRoomId, userId }) => {
+    console.log(userId);
     const findChatRoom = await ChatRoom.findOne({ _id: chatRoomId });
     if (findChatRoom.outUser === '') {
         findChatRoom.outUser = userId;
         await findChatRoom.save();
         const findChatMessages = await ChatMessage.find({ chatRoomId });
         for (let message of findChatMessages) {
-            if (message.outUser !== '') {
+            console.log(message, message.outUser !== userId);
+            if (message.outUser !== '' && message.outUser !== userId) {
                 await ChatMessage.deleteOne({ _id: message._id });
             } else {
                 message.outUser = userId;
